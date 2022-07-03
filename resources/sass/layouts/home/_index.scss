@@ -165,24 +165,26 @@
     h2 {
         color: black;
         opacity: 0.8;
-        font-size: 80px;
-        letter-spacing: 10px;
+        font-size: 70px;
         font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
         border-bottom: 3px solid $mainColor;
         margin-bottom: 20px;
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
     }
     h5 {
-        color: black;
-        opacity: 0.8;
+        margin-bottom: 70px;
+        color: rgb(38, 50, 57);
+        opacity: 0.7;
         font-size: 50px;
         letter-spacing: 10px;
-        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
-    }
-    p {
-        color: black;
-        font-size: 18px;
-        opacity: 0.9;
-        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
     }
     width: 1000px;
     height: 500px;

@@ -1479,26 +1479,29 @@
 .slider h2 {
   color: black;
   opacity: 0.8;
-  font-size: 80px;
-  letter-spacing: 10px;
+  font-size: 70px;
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   border-bottom: 3px solid #F60B1C;
   margin-bottom: 20px;
 }
 
+.slider h2 a {
+  text-decoration: none;
+  color: inherit;
+}
+
 .slider h5 {
-  color: black;
-  opacity: 0.8;
+  margin-bottom: 70px;
+  color: #263239;
+  opacity: 0.7;
   font-size: 50px;
   letter-spacing: 10px;
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 
-.slider p {
-  color: black;
-  font-size: 18px;
-  opacity: 0.9;
-  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+.slider h5 a {
+  text-decoration: none;
+  color: inherit;
 }
 
 .slider img {

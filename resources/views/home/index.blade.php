@@ -20,27 +20,26 @@
 </div>
 
 
-<div class="container">
+<div class="container mt-5">
     <div class="row">
         <div class="slider col-12">
-                <h2 class="text-center">Kinder</h2>
+                <h2 class="text-center"> <a href="{{Route('category.index',['categoryId'=>1 ,'start'=>0])}}">Kinder</a></h2>
                 <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
                         @foreach ($childrenArticles as $article)
                             @if ($loop->index==0)
                             <div class="carousel-item active">
-                                <img src="{{$article->mainPhoto}}" class="d-block w-100" alt="...">
-                                <div class="carousel-caption d-none d-md-block">
-                                <h5><a href="{{Route('product.myProduct',[$article->id])}}"> {{$article->articleName}}</a></h5>
-                                <p>{{$article->description}}</p>
+                                <a href="{{Route('product.myProduct',[$article->id])}}"><img src="{{$article->mainPhoto}}" class="d-block w-100" alt="..."></a>
+                                <div class="carousel-caption  d-none d-md-block">
+                                <h5><a href="{{Route('product.myProduct',[$article->id])}}"> {{$article->articleName}}</a></h5>  
+                                                          
                                 </div>
                             </div>
                             @else
                             <div class="carousel-item">
-                                <img src="{{$article->mainPhoto}}" class="d-block w-100" alt="...">
+                                <a href="{{Route('product.myProduct',[$article->id])}}"><img src="{{$article->mainPhoto}}" class="d-block w-100" alt="..."></a>
                                 <div class="carousel-caption d-none d-md-block">
-                                <h5><a href="{{Route('product.myProduct',[$article->id])}}"> {{$article->articleName}}</a></h5>
-                                <p>{{$article->description}}</p>
+                                <h5><a href="{{Route('product.myProduct',[$article->id])}}"> {{$article->articleName}} </a></h5>
                                 </div>
                             </div>
                             @endif
@@ -57,28 +56,38 @@
                 </div>
         </div>
     </div>
+    <div class="row">
+        @foreach ($neuChildernArticels as $article)
+        <div class="card col-md-4">
+            <a href="{{Route('product.myProduct',[$article->id])}}"><img src='{{$article->mainPhoto}}' class="card-img-top" alt="..." style="height: 200px;width:420px;"></a>
+            <div class="card-body">
+              <h5 class="card-title">{{$article->articleName}}</h5>
+              <p class="card-text">{{$article->description}}</p>
+              <div class="w-100"><a href="{{Route('product.myProduct',[$article->id])}}" class="btn btn-primary w-100">{{$article->articleName}}</a></div>
+            </div>
+          </div>
+        @endforeach
+    </div>
 </div>
-<div class="container">
+<div class="container mt-5">
     <div class="row">
         <div class="slider col-12">
-            <h2 class="text-center">Geburtstag</h2>
+            <h2 class="text-center"><a href="{{Route('category.index',['categoryId'=>2 ,'start'=>0])}}">Geburtstag</a></h2>
             <div id="carouselExampleCaptions2" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
                     @foreach ($birthsDateArticles as $article)
                         @if ($loop->index==0)
                         <div class="carousel-item active">
-                            <img src="{{$article->mainPhoto}}" class="d-block w-100" alt="...">
+                            <a href="{{Route('product.myProduct',[$article->id])}}"><img src="{{$article->mainPhoto}}" class="d-block w-100" alt="..."></a>
                             <div class="carousel-caption d-none d-md-block">
                             <h5><a href="{{Route('product.myProduct',[$article->id])}}"> {{$article->articleName}}</a></h5>
-                            <p>{{$article->description}}</p>
                             </div>
                         </div>
                         @else
                         <div class="carousel-item">
-                            <img src="{{$article->mainPhoto}}" class="d-block w-100" alt="...">
+                            <a href="{{Route('product.myProduct',[$article->id])}}"><img src="{{$article->mainPhoto}}" class="d-block w-100" alt="..."></a>
                             <div class="carousel-caption d-none d-md-block">
                           <h5><a href="{{Route('product.myProduct',[$article->id])}}"> {{$article->articleName}}</a></h5>
-                            <p>{{$article->description}}</p>
                             </div>
                         </div>
                         
@@ -96,28 +105,39 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        @foreach ($neuBirthsDateArticels as $article)
+        <div class="card col-md-4">
+            <a href="{{Route('product.myProduct',[$article->id])}}"><img src='{{$article->mainPhoto}}' class="card-img-top" alt="..." style="height: 200px;width:420px;"></a>
+            <div class="card-body">
+              <h5 class="card-title">{{$article->articleName}}</h5>
+              <p class="card-text">{{$article->description}}</p>
+              <div class="w-100"><a href="{{Route('product.myProduct',[$article->id])}}" class="btn btn-danger w-100">{{$article->articleName}}</a></div>
+            </div>
+          </div>
+        @endforeach
+    </div>
 </div>
-<div class="container">
+</div>
+<div class="container mt-5">
     <div class="row">
         <div class="slider">
-            <h2 class="text-center">Hochzeit</h2>
+            <h2 class="text-center"><a href="{{Route('category.index',['categoryId'=>3 ,'start'=>0])}}">Hochzeit</a></h2>
             <div id="carouselExampleCaptions3" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
                     @foreach ($weddingArticles as $article)
                         @if ($loop->index==0)
                         <div class="carousel-item active">
-                            <img src="{{$article->mainPhoto}}" class="d-block w-100" alt="...">
+                            <a href="{{Route('product.myProduct',[$article->id])}}"><img src="{{$article->mainPhoto}}" class="d-block w-100" alt="..."></a>
                             <div class="carousel-caption d-none d-md-block">
                             <h5><a href="{{Route('product.myProduct',[$article->id])}}"> {{$article->articleName}}</a></h5>
-                            <p>{{$article->description}}</p>
                             </div>
                         </div>
                         @else
                         <div class="carousel-item">
-                            <img src="{{$article->mainPhoto}}" class="d-block w-100" alt="...">
+                            <a href="{{Route('product.myProduct',[$article->id])}}"><img src="{{$article->mainPhoto}}" class="d-block w-100" alt="..."></a>
                             <div class="carousel-caption d-none d-md-block">
                             <h5><a href="{{Route('product.myProduct',[$article->id])}}"> {{$article->articleName}}</a></h5>
-                            <p>{{$article->description}}</p>
                             </div>
                         </div>
                         @endif
@@ -133,6 +153,18 @@
                 </button>
             </div>
         </div>
+    </div>
+    <div class="row">
+        @foreach ($neuweddingArticles as $article)
+        <div class="card col-md-4">
+            <a href="{{Route('product.myProduct',[$article->id])}}"><img src='{{$article->mainPhoto}}' class="card-img-top" alt="..." style="height: 200px;width:420px;"></a>
+            <div class="card-body">
+              <h5 class="card-title">{{$article->articleName}}</h5>
+              <p class="card-text">{{$article->description}}</p>
+              <div class="w-100"><a href="{{Route('product.myProduct',[$article->id])}}" class="btn btn-dark w-100">{{$article->articleName}}</a></div>
+            </div>
+          </div>
+        @endforeach
     </div>
 </div>
 

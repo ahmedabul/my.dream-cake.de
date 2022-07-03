@@ -22,4 +22,13 @@ class Category extends Model
         ->where('categories.categoryName',$categoryName)
         ->get();
     }
+    public static function getLast3_Articles($categoryName)
+    {
+        return DB::table('categories')
+        ->join('articles','categories.id','=','articles.category_id')
+        ->where('categories.categoryName',$categoryName)
+        ->orderBy('articles.created_at', 'desc')
+        ->take(3)
+        ->get();
+    }
 }
