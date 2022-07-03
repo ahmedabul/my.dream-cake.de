@@ -1,0 +1,44 @@
+.driver-show {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: black;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', 'Arial', 'sans-seri';
+    form {
+        width: 50%;
+        h2 {
+            color: $mainColor;
+            border-bottom: 3px solid $mainColor;
+            letter-spacing: 3px;
+        }
+        .textBox {
+            overflow: hidden;
+            font-size: 20px;
+            padding: 8px 0;
+            margin: 8px 0;
+            border-bottom: 1px solid $mainColor;
+            input {
+                border: none;
+                background: none;
+                outline: none;
+                color: white;
+                font-size: 18px;
+                width: 100px;
+                float: left;
+                margin: 0 10px;
+                -webkit-appearance: none;
+            }
+        }
+        .btn {
+            background-color: brown;
+            color: silver;
+            font-size: 20px;
+        }
+        small {
+            font-size: 15px;
+        }
+    }
+}

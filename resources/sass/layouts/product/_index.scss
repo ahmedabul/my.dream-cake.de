@@ -1,0 +1,46 @@
+    .products-index,
+    .products-pagination {
+        margin-top: 5%;
+        .products-content-index,
+        .products-content-pagination {
+            img {
+                width: 100%;
+                height: 200px;
+            }
+        }
+    }
+    
+    .product-pagination {
+        .left-btn {
+            position: absolute;
+            left: 609px;
+        }
+        .right-btn {
+            position: absolute;
+            left: 854px;
+        }
+        .product-navigation {
+            width: 130px;
+            overflow: hidden;
+            .navigation {
+                display: flex;
+                .button {
+                    width: 40px;
+                    margin-right: 10px;
+                }
+            }
+        }
+    }
+    
+    .light {
+        animation: light 1s linear alternate;
+    }
+    
+    @keyframes light {
+        0% {
+            box-shadow: 0 0 5 red, 0 0 5px red, 0 0 5px red;
+        }
+        100% {
+            box-shadow: 0 0 100px red, 0 0 100px red, 0 0 100px red;
+        }
+    }

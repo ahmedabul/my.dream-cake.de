@@ -1,0 +1,67 @@
+.cart {
+    margin-top: 5%;
+    .no-order {
+        overflow: hidden;
+        .no-customer {
+            transform: translateY(-100%);
+        }
+        .admin {
+            transform: translateY(-250%);
+        }
+        .customer-cart-empty {
+            transform: translateY(-320%);
+        }
+    }
+}
+
+.messageCustomer {
+    animation: message-customer 1s ease normal forwards;
+}
+
+.messageAdmin {
+    animation: message-admin 1s ease normal forwards;
+}
+
+.messageCartEmpty {
+    animation: message-cart-empty 1s ease normal forwards;
+}
+
+@keyframes message-customer {
+    0% {
+        transform: translateY(-150%);
+    }
+    100% {
+        transform: translateY(0%);
+    }
+}
+
+@keyframes message-admin {
+    0% {
+        transform: translateY(-250%);
+    }
+    100% {
+        transform: translateY(-120%);
+    }
+}
+
+@keyframes message-cart-empty {
+    0% {
+        transform: translateY(-320%);
+    }
+    100% {
+        transform: translateY(-208%);
+    }
+}
+
+.samilar-articles {
+    .slider {
+        .out-slider {
+            .card {
+                img {
+                    width: 200px;
+                    height: 200px;
+                }
+            }
+        }
+    }
+}

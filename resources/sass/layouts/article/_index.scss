@@ -1,0 +1,52 @@
+$mainColor: #F60B1C;
+.articleIndex {
+    background-color: black;
+    opacity: 0.9;
+    width: 50%;
+    margin-top: 10px;
+    padding: 50px;
+    .auth-articleIndex {
+        width: 100%;
+        h1 {
+            font-size: 40px;
+            border-bottom: 6px solid $mainColor;
+            margin-bottom: 50px;
+            padding: 13px 0;
+            width: 70%
+        }
+        .auth-textBox {
+            width: 70%;
+            overflow: hidden;
+            font-size: 20px;
+            padding: 8px 0;
+            margin: 8px 0;
+            border-bottom: 1px solid $mainColor;
+            input {
+                border: none;
+                background: none;
+                outline: none;
+                color: white;
+                font-size: 18px;
+                width: 100%;
+                margin: 0 10px;
+                -webkit-appearance: none;
+            }
+        }
+        .btn-register {
+            background-color: $mainColor;
+            color: black;
+            font-size: 25px;
+        }
+    }
+}
+
+.researched-articles {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    .articles {
+        img {
+            width: 100%;
+            height: 200px;
+        }
+    }
+}

@@ -1,0 +1,19 @@
+.orders-to-drivers {
+    margin-top: 100px;
+    .invoice {
+        border: 1px solid silver;
+        margin-left: 10px;
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        .order-table {
+            img {
+                height: 40px;
+                width: 40px;
+            }
+        }
+    }
+}

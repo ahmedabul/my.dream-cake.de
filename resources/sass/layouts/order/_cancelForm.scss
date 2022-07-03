@@ -1,0 +1,25 @@
+.cancel-form {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: black;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    .header {
+        margin-bottom: 50px;
+        color: $mainColor;
+        h2 {
+            font-size: 50px;
+            border-bottom: 3px solid $mainColor;
+        }
+    }
+    label {
+        font-size: 20px;
+        color: dimgray;
+    }
+    textarea {
+        height: 100px;
+    }
+}

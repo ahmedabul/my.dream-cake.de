@@ -1,0 +1,49 @@
+$mainColor: #F60B1C;
+.Orders-index {
+    margin-top: 80px;
+    .card {
+        background-color: black;
+        opacity: 0.7;
+        h2 {
+            color: $mainColor;
+            border-bottom: 1px solid $mainColor;
+        }
+    }
+    .invoice {
+        padding: 10px;
+        border-bottom: 1px solid grey;
+        table {
+            img {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    }
+}
+
+.delete-delivered-alert {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: black;
+    opacity: 0.9;
+    z-index: 11;
+    display: none;
+    color: antiquewhite;
+    .order-alert {
+        border-bottom: 1px solid $mainColor;
+        padding: 20px;
+        .alert-header {
+            h2 {
+                border-bottom: 5px solid $mainColor;
+            }
+        }
+    }
+    .order-alert-sms {
+        h6 {
+            font-size: 200px;
+        }
+    }
+}

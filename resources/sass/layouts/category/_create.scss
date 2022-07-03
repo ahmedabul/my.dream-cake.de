@@ -1,0 +1,51 @@
+$mainColor: #F60B1C;
+.auth {
+    background-color: black;
+    opacity: 0.9;
+    height: 700px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .auth-categoryCreate {
+        width: 50%;
+        img {
+            width: 50%;
+            height: 200px;
+        }
+        h1 {
+            float: left;
+            font-size: 40px;
+            border-bottom: 6px solid $mainColor;
+            margin-bottom: 50px;
+            padding: 13px 0;
+        }
+        .auth-textBox {
+            width: 100%;
+            overflow: hidden;
+            font-size: 20px;
+            padding: 8px 0;
+            margin: 8px 0;
+            border-bottom: 1px solid $mainColor;
+            i {
+                display: block;
+                float: right;
+            }
+            input {
+                border: none;
+                background: none;
+                outline: none;
+                color: white;
+                font-size: 18px;
+                width: 100%;
+                float: left;
+                margin: 0 10px;
+                -webkit-appearance: none;
+            }
+        }
+        .btn-register {
+            background-color: $mainColor;
+            color: black;
+            font-size: 25px;
+        }
+    }
+}

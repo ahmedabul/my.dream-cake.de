@@ -1,0 +1,17 @@
+.deliver-cancel {
+    display: flex;
+    justify-content: center;
+    .cover {
+        margin-top: 100px;
+        h2 {
+            border-bottom: 5px solid rgb(208, 40, 74);
+        }
+        .deliver-cancel-form {
+            border: 1px solid silver;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+    }
+}
