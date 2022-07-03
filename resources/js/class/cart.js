@@ -122,7 +122,7 @@ class Cart {
                     var articles = JSON.parse(localStorage.getItem('articles'));
                     if (articles.length > 0) {
                         var deliveryAddressId = $(".delivery-address-id").val();
-                        window.location.replace("http://127.0.0.1:8000/order/pay/" + deliveryAddressId);
+                        window.location.replace(Cart.baseUrl + "/order/pay/" + deliveryAddressId);
                     } else {
                         $(".no-order .customer-cart-empty").addClass('messageCartEmpty');
                     }
