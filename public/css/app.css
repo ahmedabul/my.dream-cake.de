@@ -1517,6 +1517,11 @@
   height: 300px;
 }
 
+.last-3articles img {
+  height: 300px;
+  width: 100%;
+}
+
 .myProfile-index {
   margin-top: 100px;
 }

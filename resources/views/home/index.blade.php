@@ -56,10 +56,10 @@
                 </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row last-3articles">
         @foreach ($neuChildernArticels as $article)
         <div class="card col-md-4">
-            <a href="{{Route('product.myProduct',[$article->id])}}"><img src='{{$article->mainPhoto}}' class="card-img-top" alt="..." style="height: 200px;width:420px;"></a>
+            <a href="{{Route('product.myProduct',[$article->id])}}"><img src='{{$article->mainPhoto}}'  alt="..."></a>
             <div class="card-body">
               <h5 class="card-title">{{$article->articleName}}</h5>
               <p class="card-text">{{$article->description}}</p>
@@ -67,7 +67,7 @@
             </div>
           </div>
         @endforeach
-    </div>
+    </div> 
 </div>
 <div class="container mt-5">
     <div class="row">
@@ -105,10 +105,10 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row last-3articles">
         @foreach ($neuBirthsDateArticels as $article)
         <div class="card col-md-4">
-            <a href="{{Route('product.myProduct',[$article->id])}}"><img src='{{$article->mainPhoto}}' class="card-img-top" alt="..." style="height: 200px;width:420px;"></a>
+            <a href="{{Route('product.myProduct',[$article->id])}}"><img src='{{$article->mainPhoto}}' class="card-img-top" alt="..." ></a>
             <div class="card-body">
               <h5 class="card-title">{{$article->articleName}}</h5>
               <p class="card-text">{{$article->description}}</p>
@@ -154,10 +154,10 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row last-3articles">
         @foreach ($neuweddingArticles as $article)
         <div class="card col-md-4">
-            <a href="{{Route('product.myProduct',[$article->id])}}"><img src='{{$article->mainPhoto}}' class="card-img-top" alt="..." style="height: 200px;width:420px;"></a>
+            <a href="{{Route('product.myProduct',[$article->id])}}"><img src='{{$article->mainPhoto}}' class="card-img-top" alt="..." ></a>
             <div class="card-body">
               <h5 class="card-title">{{$article->articleName}}</h5>
               <p class="card-text">{{$article->description}}</p>
