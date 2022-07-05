@@ -60,6 +60,30 @@
     .category-pagination {
         .left-btn {
             position: absolute;
+            left: 25px;
+        }
+        .right-btn {
+            position: absolute;
+            left: 300px;
+        }
+        .category-navigation {
+            width: 130px;
+            overflow: hidden;
+            .navigation {
+                display: flex;
+                .button {
+                    width: 40px;
+                    margin-right: 10px;
+                }
+            }
+        }
+    }
+}
+
+@media (min-width: 720px) {
+    .category .category-pagination {
+        .left-btn {
+            position: absolute;
             left: 609px;
         }
         .right-btn {

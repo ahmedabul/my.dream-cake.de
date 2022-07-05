@@ -22,7 +22,7 @@
         </div>
     </div>
 
-    <nav class="d-flex justify-content-center mt-5  mb-5 product-pagination" aria-label="Page">
+    <nav class="d-flex justify-content-center mt-5  mb-5 product-pagination " aria-label="Page">
         <a class="btn btn-outline-danger left-btn"><<</a>
         <a class="btn btn-outline-danger right-btn">>></a>
         <div class="product-navigation">

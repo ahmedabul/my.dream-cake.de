@@ -2,8 +2,8 @@
 @section('content')
     <div class="category">
         <div class="cover">
-            <h2><span>{{$category->logo}}</span></h2>
-            <h3><span> SARA JOLIE </span></h3>
+            <h2 class="text-center"><span>{{$category->logo}}</span></h2>
+            <h3><span> DREAM CAKE </span></h3>
         </div>
         <div class="header">
             <img src="{{$category->photo}}">
