@@ -1,7 +1,6 @@
 @extends('app')
 @section('content')
-    <div class="order-goToResearch" style="margin-top:150px">
-        <div class="container">
+    <div class="order-goToResearch" >
             <div class="row">
                 <div class="header col-md-10">
                     <h2>Bestellung-Suchen</h2>
@@ -11,7 +10,6 @@
                     </div>
                 </div>
             </div>
-        </div>
         <div class="body">
 
         </div>

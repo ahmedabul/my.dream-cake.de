@@ -69,7 +69,7 @@
                     @endif
                 </div>
                 <div class="text-center">
-                    <input type="submit" class="btn-register mt-5 btn w-50" value="New Artikel">
+                    <input type="submit" class="btn-register mt-5 btn w-100" value="New Artikel">
                 </div>
             </div>
             @if(!empty(Session::get('sts')))

@@ -32,7 +32,7 @@
                     @endif
                 </div>
                 <div class="text-center">
-                    <input type="submit" class="btn-register mt-5 btn w-50" value="Neue Kategore" >
+                    <input type="submit" class="btn-register mt-5 btn w-100" value="Neue Kategore" >
                 </div>
             </div>
             @if(!empty(Session::get('sts')))

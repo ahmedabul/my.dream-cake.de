@@ -300,7 +300,6 @@
 .articleIndex {
   background-color: black;
   opacity: 0.9;
-  width: 50%;
   margin-top: 10px;
   padding: 50px;
 }
@@ -332,7 +331,7 @@
   outline: none;
   color: white;
   font-size: 18px;
-  width: 100%;
+  width: 200%;
   margin: 0 10px;
   -webkit-appearance: none;
 }
@@ -614,6 +613,13 @@
 .navbar .admin {
   font-family: "Gill Sans", "Gill Sans MT", "Calibri", "Trebuchet MS", sans-serif;
   letter-spacing: 1px;
+}
+
+@media screen and (max-width: 600px) {
+  .navbar .admin {
+    margin-top: -300px;
+    margin-left: 150px;
+  }
 }
 
 .cart {
@@ -1174,12 +1180,14 @@
   border-radius: 50px;
 }
 
+.order-goToResearch {
+  margin-top: 70px;
+}
+
 .order-goToResearch .header {
   background-color: black;
-  height: 250px;
+  width: 100%;
   padding: 50px;
-  border-radius: 10px;
-  margin-left: 91px;
 }
 
 .order-goToResearch .header h2 {

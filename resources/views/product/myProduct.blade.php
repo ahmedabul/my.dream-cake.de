@@ -5,7 +5,7 @@
             <div class="myProduct-cover"></div>
             <img class="myProduct-mainPhoto" src="{{$product->mainPhoto}}" alt="">
             <div class="page-logo"><p class="text-center">DREAM CAKE</p></div>
-            <div class="myProduct-name"><p class="text-center">{{$product->articleName}}</p></div>
+            <div class="myProduct-name d-none d-md-block"><p class="text-center">{{$product->articleName}}</p></div>
             <div class="line"></div>
         </div>
         <div class="myProduct-body mt-3">
