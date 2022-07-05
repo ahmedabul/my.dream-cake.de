@@ -639,7 +639,7 @@
 }
 
 .cart .no-order .customer-cart-empty {
-  transform: translateY(-350%);
+  transform: translateY(-370%);
 }
 
 .messageCustomer {
