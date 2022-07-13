@@ -377,6 +377,18 @@ function loginCheck($request)
         }
     }
 }
+if(!function_exists('logoutSession'))
+{
+    function logoutSession()
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        if(isset($_SESSION['cartArticles']))
+        unset($_SESSION['cartArticles']);
+    }
+}
+
 
 /*forgetPasswordController */
 if(!function_exists('getForgetPasswordMessages'))
@@ -1026,6 +1038,9 @@ if(!function_exists('goToCart'))
                 array_push($articles,Article::find($articleData['id']));
             }
         }
+        else{
+            $_SESSION['cartArticles']=$articles;
+        }
         return $articles;
     }
 }
@@ -1115,7 +1130,7 @@ if(!function_exists('articleCountChanged'))
 {
     function articleCountChanged($articleId,$articleCount)
     {
-        if (session_status() === PHP_SESSION_NONE) {
+        if (session_status() === PHP_SESSION_NONE) { 
             session_start();
         }
         $cartArticles=$_SESSION['cartArticles'];

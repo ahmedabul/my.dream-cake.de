@@ -31,6 +31,7 @@ class loginController extends Controller
         Auth::guard('customer')->logout();
         Auth::guard('admin')->logout();
         Auth::guard('driver')->logout();
+        logoutSession();
         return redirect()->route('home.index');
     }
 }
