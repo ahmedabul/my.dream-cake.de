@@ -25,7 +25,7 @@ class paypalController extends Controller
         $mount=0;
         foreach($articles as $article => $articleData)
         {
-            $mount+=$articleData['price'];
+            $mount+=$articleData['price']*$articleData['articleCount'];
         }
 
         try {
