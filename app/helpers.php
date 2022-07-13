@@ -73,7 +73,7 @@ if(!function_exists('getCustomerInvoicess'))
         ->join('articles','articles.id','=','orders.article_id')
         ->select('*','invoices.created_at as orderDate','invoices.id as invoiceId','delivery_addresses.lastName as daLastName','delivery_addresses.firstName as daFirstName','orders.id as orderId')
         ->where('customers.id','=',$customerId)
-        ->orderBy('orders.created_at','desc')
+        //->orderBy('orders.created_at','desc')
         ->get();
         $orders=[];
         $order=[];
