@@ -3,7 +3,6 @@
     @include('layouts.navbarDriver')
 @else
     @php
-        $countArticlesImCart=countArticlesInCart();
         $categories=getCategories();
     @endphp
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -33,7 +32,7 @@
                 </li>
                 </ul> 
                 <ul class="navbar-nav  mb-2 mb-lg-0">
-                <div class="text-danger "><p class="articlesLength">{{$countArticlesImCart}}</p> <a class="decoration-none goToCart" href="{{Route('cart.goToCart')}}"><i class="fa fa-shopping-cart mt-1 btn" aria-hidden="true" style="color: white"></i></a> </div>
+                <div class="text-danger "><p class="articlesLength">{{countArticlesImCart()}}</p> <a class="decoration-none goToCart" href="{{Route('cart.show')}}"><i class="fa fa-shopping-cart mt-1 btn" aria-hidden="true" style="color: white"></i></a> </div>
                 </ul>
                 @if(Auth::guard('customer')->check())
                     @include('layouts.navbarCustomer')

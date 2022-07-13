@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Delivery_address;
+use App\Delivery_address; 
 use App\Driver;
 use App\Invoice;
 use App\Order;
@@ -18,22 +18,23 @@ class orderController extends Controller
     }
     public function checkLogin(Request $request) 
     {
+        $articlesCount=countArticlesImCart();
+        $articles=articlesImCart();
         if(Auth::guard('admin')->check())
         {
-            return 'admin';
+            return ['type'=>'admin'];
         }
         elseif(Auth::guard('customer')->check())
         {
-            session()->put('articles', $request->articles);
-            return 'customer';
+            return ['type'=>'customer','articlesCount'=>$articlesCount,'articles'=>$articles];
         }
         else{
-            return 'noCustomer';
+            return ['type'=>'noCustomer'];
         }
     }
     public function pay($deliveryAddressId)
     {
-        $articles=session()->get('articles');
+        $articles=articlesImCart();
         $deliveryAddress=Delivery_address::find($deliveryAddressId);
         if(empty($deliveryAddress))
         {
@@ -57,7 +58,7 @@ class orderController extends Controller
         //Send to Customer Thanksemail for Order, with Variable 'orders' to show the new Orders
         sendTanksOrderEmail($orders);
         //Empty Session 'articles
-        session()->forget('articles');
+        unset($_SESSION['cartArticles']);
         return view('order.create',compact('orders'));
     
     }

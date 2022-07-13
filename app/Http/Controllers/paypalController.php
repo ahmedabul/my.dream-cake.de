@@ -21,11 +21,11 @@ class paypalController extends Controller
     }
     public function index(Request $request)
     {
-        $articles=Session()->get('articles');
+        $articles=articlesImCart();
         $mount=0;
-        foreach($articles as $article)
+        foreach($articles as $article => $articleData)
         {
-            $mount+=$article['price'];
+            $mount+=$articleData['price'];
         }
 
         try {

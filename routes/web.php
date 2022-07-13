@@ -56,15 +56,16 @@ Route::group(['prefix'=>'article','middleware'=>'admin'],function(){
 /*Product*/
 Route::group(['prefix'=>'product'],function(){
   route::get('index','productController@index')->name('product.index');
-  route::post('show','productController@show')->name('product.show');
+  route::get('show/{page}','productController@show')->name('product.show');
   route::get('myProduct/{productId}','productController@myProduct')->name('product.myProduct');
 });
 /*Cart*/
 Route::group(['prefix'=>'cart'],function(){
-  route::get('goToCart','cartController@goToCart')->name('cart.goToCart');
-  route::post('addToCart','cartController@addTocart')->name('cart.addToCart');
-  route::post('storeCart','cartController@storeCart')->name('cart.storeCart'); 
-  route::post('removeFromCart','cartController@removeFromCart')->name('cart.removeFromCart');
+ 
+  route::post('add','cartController@add')->name('cart.add');
+  route::get('remove/{id}','cartController@remove')->name('cart.remove');
+  route::get('show','cartController@show')->name('cart.show');
+  route::post('change','cartController@change')->name('cart.change');
 });
 /*Order*/
 Route::group(['prefix'=>'order'],function(){

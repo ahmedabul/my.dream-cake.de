@@ -506,6 +506,41 @@
   }
 }
 
+.cart-alert {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: black;
+  opacity: 0.9;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.cart-alert .message-md {
+  color: aliceblue;
+  padding: 50px;
+}
+
+.cart-alert .message-md h2 {
+  border-bottom: 4px solid #F60B1C;
+  letter-spacing: 3px;
+}
+
+.cart-alert .message-md .buttons {
+  margin-top: 50px;
+}
+
+.cart-alert .message-sm {
+  color: aliceblue;
+  padding: 50px;
+  width: 90%;
+  border-bottom: 1px solid aliceblue;
+}
+
 .myProduct .myProduct-header {
   position: relative;
 }

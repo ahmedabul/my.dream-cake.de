@@ -6,49 +6,45 @@ use App\Article;
 use App\Delivery_address;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Mockery\Undefined;
-
+ 
 class cartController extends Controller 
-{
-    public function goToCart()
+{ 
+ 
+    public function add(Request $request)
     {
-        //Get Multi-Arry 'articles' from Session
-        $articles= session()->get('articles');
-
-        //No Customer, DeliveryAddresses is NULL
-        $deliveryAddresses=NULL;
-        //Check, if Customer loged in
+        if (!checkArticleImCart($request->articleId))
+        {
+        addToCart($request->articleId);
+        return ['sts'=>'true','count'=>count($_SESSION['cartArticles'])];
+        }
+        return ['sts'=>'false','count'=>count($_SESSION['cartArticles'])];
+    }
+    public function remove($id)
+    {
+       removeFromCart($id); 
+       return redirect()->route('cart.show');
+    }
+    public function show() 
+    {
+        //Get all Articles from Session
+        $articles=goToCart();
+        //Reset all Counts of Articles ['articleCount']=1
+        resetCountsArticles();
+        $deliveryAddresses=null;
         if(Auth::guard('customer')->check())
         {
-            //Get CustomerId
             $customerId=Auth::guard('customer')->user()->id;
-            //Get all Deliveryaddresses of Customer, who loged in
-            $deliveryAddresses=Delivery_address::getAdresses($customerId);
+            $deliveryAddresses=Delivery_address::where('customer_id',$customerId)->get();
         }
-        //Go to Cart
-        return view('cart.goToCart',compact('articles','deliveryAddresses'));
+        return view('cart.show',compact('articles','deliveryAddresses'));
     }
-    public function addToCart(Request $request)
+    public function change(Request $request)
     {
-        //Get the Article, which will be added to cart
-        $article=Article::find($request->articleId);
-        //return this Article to 'cart/cartOperation.js' per Ajax
-        return $article;
-    } 
-    public function storeCart(Request $request)
-    {
-        //Store the Multi-Arry 'articles' in Session
-        session()->put('articles',$request->articles);
-        //Return successfuly Message
-        return count(session()->get('articles'));
+        articleCountChanged($request->articleId,$request->count);
+        return array_values($_SESSION['cartArticles']);
     }
-    public function removeFromCart(Request $request)
-    {
-        //Store the new Multi-Array 'articles', without removed 'article'
-        session()->put('articles',$request->articles);
-        //Return successfuly Message 
-       // return count(session()->get('articles'));
-    }
+
+
 
 }
  

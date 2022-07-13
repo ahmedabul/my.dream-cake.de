@@ -46,7 +46,7 @@
                         <div class="card-body">
                           <h5 class="card-title">{{$product->articleName}}</h5>
                           <p class="card-text">{{$product->description}}</p>
-                          <a articleId="{{$product->id}}" class="btn btn-danger addToThecart">In den Warenkorb</a>
+                          <a  articleId={{$product->id}} class="btn btn-danger addToCart">In den Warenkorb</a>
                         </div>
                         <div class="card-footer text-muted">
                         Preise:{{$product->price}}€ <small>(inkl. MwSt.)</small>
@@ -91,5 +91,29 @@
             </div>
         </div>
       </div>
+    </div>
+    <div class="cart-alert d-none">
+        <div class="message-md w-50 d-none d-md-block">
+            <h2 class="text-center">Das Artikel ist schon im Warenkorb!!!</h2>
+            <div class="row buttons">
+                <div class="col-md-6">
+                    <a class="btn btn-danger w-100 cart-alert-remove" href="{{Route('cart.show')}}">Warenkorb ansehen<i class="fa fa-shopping-cart btn" aria-hidden="true" style="color: white"></i></a>
+                </div>
+                <div class="col-md-6">
+                    <a class="btn btn-danger w-100 cart-alert-remove" >Zurück<i class="fas fa-window-close btn" aria-hidden="true" style="color: white"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="message-sm d-md-none">
+            <h2 class="text-center">Das Artikel ist schon im Warenkorb!!!</h2>
+            <div class="row buttons">
+                <div class="col-12">
+                    <a class="btn btn-danger w-100 cart-alert-remove" href="{{Route('cart.show')}}">Warenkorb ansehen<i class="fa fa-shopping-cart btn" aria-hidden="true" style="color: white"></i></a>
+                </div>
+                <div class="col-12">
+                    <a class="btn btn-danger w-100 cart-alert-remove mt-3" >Zurück<i class="fas fa-window-close btn" aria-hidden="true" style="color: white"></i></a>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection

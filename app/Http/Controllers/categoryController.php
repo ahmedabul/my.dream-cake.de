@@ -67,15 +67,8 @@ class categoryController extends Controller
         $category=Category::find($categoryId);
         $categoryArticles=Article::with('category')->where('category_id',$categoryId)->get();
         $articles=$categoryArticles->skip(($start)*12)->take(12);
-        $articleCount=ceil(count($categoryArticles)/12);
-        if($start==0)
-        {
-            //return view category.index
-            return view('category.index',compact(['category','articles']),['articleCount'=>$articleCount]);
-        }
-        else{
-            //retrn articles to ajax 
-            return $articles;
-        } 
+        $articleCount=ceil(count($categoryArticles)/12);  
+        //return view category.index
+        return view('category.index',compact(['category','articles']),['articleCount'=>$articleCount]);
     }
 }

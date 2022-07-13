@@ -23,7 +23,7 @@
                         <td><img src="{{$article['mainPhoto']}}" style="width: 70px ; height:70px"> </td>
                         <td><input class="articleCount w-100" type="number"  min="1" max="5" value="1" price="{{$article['price']}}" articleid="{{$article['id']}}"></td>
                         <td id="{{$article['id']}}" class="price">{{$article['price']}}€</td>
-                        <td><a articleId="{{$article['id']}}" class="btn text-danger removeFromCart"><i class="fa fa-times" aria-hidden="true"></i></a></td>
+                        <td><a href="{{Route('cart.remove',['id'=>$article['id']])}}" class="btn text-danger"><i class="fa fa-times" aria-hidden="true"></i></a></td>
                     </tr>
                     @php
                         $totalPrice+=$article['price'];
@@ -74,7 +74,7 @@
             </div>
 
             <div class="no-order mt-3 text-center">
-              <div class="card no-customer w-50 mx-auto">
+              <div class="card no-customer mx-auto">
                   <div class="card-header">
                       Sie sind nicht angemeldet
                   </div>
@@ -85,18 +85,18 @@
                       </blockquote>
                   </div>
               </div>
-              <div class="card admin w-50 mx-auto">
+              <div class="card admin mx-auto">
                 <div class="card-header">
                     Hallo Admin, Danke Für die Erprobung
                 </div>
                 <div class="card-body">
                     <blockquote class="blockquote mb-0">
                         <p>Die Bestellung für ein Admin ist in unserer Seite NICHT möglich </p>
-                        <footer class="blockquote-footer">Wöllen  Sie noch weiter erproben, verwenden Sie das<cite title="Source Title"> <br>USER-TEST-KONTO</cite></footer>
+                        <footer class="blockquote-footer">Wöllen Sie noch weiter erproben, verwenden Sie das<cite title="Source Title"> <br>USER-TEST-KONTO</cite></footer>
                     </blockquote>
                 </div>
               </div>
-              <div class="card customer-cart-empty w-50 mx-auto">
+              <div class="card customer-cart-empty mx-auto">
                 <div class="card-header">
                   Ihr Warenkorb enthält keine Produkte
                 </div>

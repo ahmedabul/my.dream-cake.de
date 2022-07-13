@@ -1,6 +1,4 @@
-@php
-    $countArticlesImCart=countArticlesInCart();
-@endphp
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
       <a class="navbar-brand text-danger" href="{{Route('home.index')}}"><span class="logo">SARAJOLIE</span></a>
@@ -28,7 +26,7 @@
           </li>
         </ul> 
         <ul class="navbar-nav  mb-2 mb-lg-0">
-          <div class="text-danger "><p class="articlesLength">{{$countArticlesImCart}}</p> <a class="decoration-none goToCart" href="{{Route('cart.goToCart')}}"><i class="fa fa-shopping-cart mt-1 btn" aria-hidden="true" style="color: white"></i></a> </div>
+          <div class="text-danger "><p class="articlesLength">{{countArticlesImCart()}}</p> <a class="decoration-none goToCart" href="{{Route('cart.goToCart')}}"><i class="fa fa-shopping-cart mt-1 btn" aria-hidden="true" style="color: white"></i></a> </div>
         </ul>
         @if(Auth::guard('customer')->check())
         <ul class="navbar-nav  mb-2 mb-lg-0" style="margin-right: 100px">

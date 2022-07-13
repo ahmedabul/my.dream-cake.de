@@ -6,7 +6,7 @@ $('.pay-btn').click(function() {
 //Button .order-delte clicked to cancel the Order => show Alert
 var order;
 $(".order-delete").click(function(e) {
-        e.pereventDefault;
+        e.pereventDefault();
         order = new Order($(this).attr("invoiceId"), $(this).attr("orderId"), $(this).attr("email"), 'delete');
         order.alertQuestion("Möchten Sie Wircklich diese Bestellung stönieren?");
         order.showAlert();
@@ -27,7 +27,7 @@ $('.order-alert-yes').click(function() {
 });
 //Button .order-delivered clicked => show Alert
 $('.order-deliver').click(function(e) {
-    e.preventDefault;
+    e.preventDefault();
     order = new Order($(this).attr("invoiceId"), $(this).attr("orderId"), $(this).attr("email"), 'deliver');
     order.alertQuestion("Wurde diese Bestellung wircklich geliefert?");
     order.showAlert();

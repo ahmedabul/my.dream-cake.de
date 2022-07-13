@@ -21,9 +21,8 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-
-
 use function PHPSTORM_META\type;
+
 
 /*Helepers Functions */
 if(!function_exists('getCategories'))
@@ -61,18 +60,7 @@ if(!function_exists('storePhoto'))
         return '/'. $path.'/'.$photoName;
     }
 }
-//Get the Count Of Articles, they exist in Cart
-if(!function_exists('countArticlesInCart'))
-{
-    function countArticlesInCart()
-    {   //If Cart dose'nt has any Article,it returns 0 else it returns the Count of the Articles
-        if(!empty(session()->get('articles')))
-        {
-        return count(session()->get('articles'));
-        }
-        return 0;
-    }
-}
+
 if(!function_exists('getCustomerInvoicess'))
 {
     //Get all Invoices and Orders, they a Customer ordered yet.
@@ -641,11 +629,11 @@ if(!function_exists('createOrder'))
 {
     function createOrder()
     {   //Get all Articles from session 'from Cart'
-        $articles=session()->get('articles');
+        $articles=articlesImCart();
         //Get the last Invoice Id
         $invoiceId=getLastId(Invoice::class);
         //Create the Orders
-        foreach($articles as $article)
+        foreach($articles as $indes => $article)
         {
             Order::create([
                 'article_id'=>(int)$article['id'],
@@ -988,5 +976,172 @@ if(!function_exists('getCustomerOrder'))
         ->first();
     }
 }
+/*cartController */
+if(!function_exists('addToCart'))
+{
+    function addToCart($id)
+    {
+        //test if the Article exists in DB
+        $test_article=Article::where('id',$id)->get()->first();
+        if(!empty($test_article))
+        {
+            $articleName=$test_article->articleName;
+            $articlePrice=$test_article->price;
+            $mainPhoto=$test_article->mainPhoto;
+        }
+        //Get the Array cartArticles from Session
+        $cartArticles=$_SESSION['cartArticles'];
+        //check if the id exists in the Cart
+        $id_Exists_im_Cart=false;
+        foreach($cartArticles as $article => $articleData)
+        {
+            if($articleData['id']==$id)
+            {
+                $id_Exists_im_Cart=true;
+            }
+        }
+        //Add the id to the Cart, if it dont exist in the Cart and exists in DB
+        if(!$id_Exists_im_Cart && !empty($test_article))
+        {
+            $array=['id'=>$id,'articleCount'=>1,'articleName'=>$articleName, 'price'=>$articlePrice, 'mainPhoto'=>$mainPhoto];
+            array_push($_SESSION['cartArticles'],$array);
+        }
+    }
+}
+if(!function_exists('goToCart'))
+{
+    function goToCart()
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        $articles=array();
+        if(isset($_SESSION['cartArticles']))
+        {
+            //Get all Ids from Session
+            $cartArticles=$_SESSION['cartArticles'];
+            //Get all Daten of Articles
+            foreach($cartArticles as $article => $articleData)
+            {
+                array_push($articles,Article::find($articleData['id']));
+            }
+        }
+        return $articles;
+    }
+}
+if(!function_exists('removeFromCart'))
+{
+    function removeFromCart($id)
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        //Get all Ids from session
+        $cartArticles=$_SESSION['cartArticles'];
+        $key=false;
+        //Get the key of the id, wich will be removed
+        foreach($cartArticles as $article => $articleData)
+        {
+             if($id==$articleData['id'])
+             $key=$article;
+        }
+        //remove the id 
+        unset($cartArticles[$key]);
+        //store the new ids in the session
+        $_SESSION['cartArticles']=array_values($cartArticles);
+    }
+}
+if(!function_exists('countArticlesImCart'))
+{
+    function countArticlesImCart()
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        if(isset($_SESSION['cartArticles']))
+        {
+            return count($_SESSION['cartArticles']);
+        }
+        else{
+        return 0;
+        }
+    }   
+}
+if(!function_exists('checkArticleImCart'))
+{
+    function checkArticleImCart($id)
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        $idExists=false;
+        if(!isset($_SESSION['cartArticles']))
+        {
+            $_SESSION['cartArticles']=array();
+            return $idExists;
+        }
+        else
+        {
+            $articles=$_SESSION['cartArticles'];
+            foreach($articles as $article =>$articleData)
+            {
+                if($articleData['id']==$id)
+     
+                {
+                    $idExists=true;
+                }
+            }
+            return $idExists;
+        }
+    }
+}
+if(!function_exists('ArticlesImCart'))
+{
+    function articlesImCart()
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        $articles=array();
+        if(isset($_SESSION['cartArticles']))
+        {
+            $articles=$_SESSION['cartArticles'];
+            return array_values($articles);
+        }
+        return $articles;
+    }
+}
+if(!function_exists('articleCountChanged'))
+{
+    function articleCountChanged($articleId,$articleCount)
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        $cartArticles=$_SESSION['cartArticles'];
+        foreach($cartArticles as $article => $articleData)
+        {
+            if($articleData['id']==$articleId)
+            {
+              $_SESSION['cartArticles'][$article]['articleCount']=$articleCount;
+            }
+        }
+    }
+}
+if(!function_exists('resetCountsArticles'))
+{
+    function resetCountsArticles()
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        $cartArticles=array_values($_SESSION['cartArticles']);
+        foreach($cartArticles as $article => $articleData)
+        {
+            $_SESSION['cartArticles'][$article]['articleCount']=1;
+        }
+    }
+}
+
 
 ?>

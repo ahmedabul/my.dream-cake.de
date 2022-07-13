@@ -19390,15 +19390,11 @@ __webpack_require__(/*! ./artcleController/index */ "./resources/js/artcleContro
 
 __webpack_require__(/*! ./productController/index/pagination */ "./resources/js/productController/index/pagination.js");
 
-__webpack_require__(/*! ./productController/index/paginationAjax */ "./resources/js/productController/index/paginationAjax.js");
-
 __webpack_require__(/*! ./cartController/cartOperations */ "./resources/js/cartController/cartOperations.js");
 
 __webpack_require__(/*! ./orderController/orderOperation */ "./resources/js/orderController/orderOperation.js");
 
 __webpack_require__(/*! ./categoryController/pagination */ "./resources/js/categoryController/pagination.js");
-
-__webpack_require__(/*! ./categoryController/index */ "./resources/js/categoryController/index.js");
 
 __webpack_require__(/*! ./orderController/research.js */ "./resources/js/orderController/research.js");
 
@@ -19479,71 +19475,44 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Cart = __webpack_require__(/*! ../class/cart */ "./resources/js/class/cart.js"); //Call static Funtion addToCart. Every Buttuons '.addToCart' has as an Attribute the ArticleId
+var Cart = __webpack_require__(/*! ../class/cart */ "./resources/js/class/cart.js");
 
+var baseUrl = window.location.origin; //Call static Funtion addToCart.Buttun has Class '.addToCart' 
 
-$('body').delegate('.addToCart', 'click', function (e) {
-  if (Cart.checkArticle(this.getAttribute('articleId')) == undefined) {
-    Cart.addToCart(this.getAttribute('articleId')); //Animation at successfuly Adding of new Article in Cart
+$(".addToCart").click(function (e) {
+  e.preventDefault();
+  $.ajax({
+    type: "post",
+    url: baseUrl + "/cart/add",
+    data: {
+      articleId: $(this).attr("articleId")
+    },
+    //get researche Articles from articleController@research
+    success: function success(data) {
+      if (data.sts == 'true') {
+        //animation Red-Light at the Button
+        Cart.animation(e.target); //change the Number at the Cart-Symbol in the 'Navbar'
 
-    Cart.animation(e.target);
-  }
-});
-$(".addToThecart").click(function (e) {
-  if (Cart.checkArticle(this.getAttribute('articleId')) == undefined) {
-    Cart.addToCart(this.getAttribute('articleId')); //Animation at successfuly Adding of new Article in Cart
-
-    Cart.animation(e.target);
-  }
-}); //Call static Funtion removeFromCart. Every Buttuons '.removeFromCart' has as an Attribute the ArticleId
-
-$('.removeFromCart').click(function (e) {
-  e.preventDefault;
-  Cart.removeFromCart(this.getAttribute('articleId'));
+        Cart.changeCountSymbol(data.count);
+      } else {
+        Cart.alert();
+      }
+    }
+  }); //Animation light in The Button
 }); //With Changing the Count Of an Article in Cart, shoud be changed his Price and Total Price too
 
 $(".articleCount").change(function (e) {
   Cart.countArticleChanged(e.target);
+}); //When click the Button 'zurück' in cart-alert
+
+$(".cart-alert-remove").click(function (e) {
+  $(".cart-alert").addClass('d-none');
 }); //Click Button '.btn-order' so Customer would like to order the Article(s) in Cart
 
 $(".btn-order").click(function (e) {
-  e.preventDefault; //Custumer orders the Article(s) 
+  e.preventDefault; //Custumer orders the Article(s)  
 
   Cart.order();
-});
-
-/***/ }),
-
-/***/ "./resources/js/categoryController/index.js":
-/*!**************************************************!*\
-  !*** ./resources/js/categoryController/index.js ***!
-  \**************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _require = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js"),
-    forEach = _require.forEach; //get the baseUrl of website
-
-
-var baseUrl = window.location.origin;
-$(".category-nav-link").click(function (e) {
-  e.preventDefault;
-
-  if ($(e.target).attr('page') == 0) {
-    window.location.replace(baseUrl + "/category/index/" + $(e.target).attr('categoryId') + "/0");
-  } else {
-    $.ajax({
-      type: "get",
-      url: baseUrl + "/category/index/" + $(e.target).attr('categoryId') + "/" + $(e.target).attr('page'),
-      success: function success(articles) {
-        console.log(articles);
-        $(".category-articles").empty();
-        $.map(articles, function (article) {
-          $(".category-articles").append("<div class='card col-md-3' >" + "<a href=" + baseUrl + "/product/myProduct/" + article.id + "> <img class='card-img-top' src='" + article.mainPhoto + "' alt='Card image cap'></a>" + "<div class='card-body'>" + "<div class='card-title row'>" + "<h5 class='col-6'><a class='text-decoration-none text-dark' href=" + baseUrl + "/product/myProduct/" + article.id + ">" + article.articleName + "</a></h5>" + "<h5 class='col-6 text-right' style='text-align: right'>" + article.price + "€</h5>" + "<p class='card-text'>" + article.description.substring(0, 100) + "</p>" + "</div>" + "<div><a articleId=" + article.id + " class='btn btn-danger addToCart'>In den Warenkorb <i class='fa fa-shopping-cart' aria-hidden='true' style='color: white'></i></a></div>");
-        });
-      }
-    });
-  }
 });
 
 /***/ }),
@@ -19600,106 +19569,29 @@ var Cart = /*#__PURE__*/function () {
   }
 
   _createClass(Cart, null, [{
-    key: "checkArticle",
-    value: //get the baseUrl of website
-    function checkArticle(articleId) {
-      var articles = JSON.parse(localStorage.getItem('articles'));
-      var articleExist;
-      $(articles).each(function (index, article) {
-        if (article.id == articleId) {
-          articleExist = true;
-        }
-      });
-      return articleExist;
-    } //Add the Article to Cart
-
-  }, {
-    key: "addToCart",
-    value: function addToCart(articleId) {
-      $.ajax({
-        type: "post",
-        //Controller 'cartController' Method 'addToCart'
-        url: Cart.baseUrl + "/cart/addToCart",
-        data: {
-          articleId: articleId
-        },
-        //Accept all Data of Article, which will be added to Cart
-        success: function success(myArticle) {
-          //Create Article Object
-          var article = new Object();
-          article.articleName = myArticle.articleName;
-          article.price = myArticle.price;
-          article.mainPhoto = myArticle.mainPhoto;
-          article.id = myArticle.id; //Create Multi-Array 'articles' in Session, if it dose NOT exist
-
-          if (localStorage.getItem("articles") == null) {
-            var articles = []; //Store the Multi-Array 'articles' in Session as a String
-
-            localStorage.setItem('articles', JSON.stringify(articles));
-          } //Get Multi-Arrays 'articles' from Session as an Array
-
-
-          var articles = JSON.parse(localStorage.getItem('articles')); //Add to it the Article-Object, which Customer choosed
-
-          articles.push(article); //Store it again in the Session as a String
-
-          localStorage.setItem('articles', JSON.stringify(articles)); //Finally send it to Controller 'cartController' Method 'storeCart'
-
-          $.ajax({
-            type: "post",
-            url: Cart.baseUrl + "/cart/storeCart",
-            data: {
-              //Send the Multi-Arrays 'articles'
-              articles: JSON.parse(localStorage.getItem('articles'))
-            },
-            success: function success(articlesLength) {
-              console.log(articlesLength);
-              Cart.changeCountInCartSymbol(articlesLength);
-            }
-          });
-        }
-      });
-    } //Remove Article from the Cart
-
-  }, {
-    key: "removeFromCart",
-    value: function removeFromCart(articleId) {
-      var articles = JSON.parse(localStorage.getItem('articles'));
-      articles = $.grep(articles, function (article) {
-        return article.id != articleId;
-      });
-      console.log(articles);
-      localStorage.setItem('articles', JSON.stringify(articles));
-      $.ajax({
-        type: "post",
-        url: Cart.baseUrl + "/cart/removeFromCart",
-        data: {
-          articles: JSON.parse(localStorage.getItem('articles'))
-        },
-        success: function success(articlesLength) {
-          location.reload();
-          Cart.changeCountInCartSymbol(articlesLength);
-        }
-      });
-    } //Animation at successfuly Adding of new Article in Cart
-
-  }, {
     key: "animation",
-    value: function animation(elem) {
+    value: //get the baseUrl of website
+    //Animation at successfuly Adding of new Article in Cart
+    function animation(elem) {
       //Add class light to show the Animation
       $(elem).addClass('light'); //After 1s remove the Class light and Class light "to shwo at nixt Time the Animation again"
 
       setTimeout(function () {
         $(elem).removeClass('light');
       }, 1000);
-    } //Change the Nummber in Cart-Sympol, which exists in 'Navbar'
+    } //Alert that the Article is allrady in the Cart
 
   }, {
-    key: "changeCountInCartSymbol",
-    value: function changeCountInCartSymbol(articlesLength) {
-      console.log(articlesLength);
-      $('.articlesLength').text(articlesLength);
-    } //
+    key: "alert",
+    value: function alert() {
+      $(".cart-alert").removeClass('d-none');
+    } //Change the Number at Cart-Symbol in 'Navbar'
+
+  }, {
+    key: "changeCountSymbol",
+    value: function changeCountSymbol(count) {
+      $(".articlesLength").text(count);
+    } //Increment or discrement the Count of an Article in Cart during Select
 
   }, {
     key: "countArticleChanged",
@@ -19710,30 +19602,32 @@ var Cart = /*#__PURE__*/function () {
         $totalPrice += parseInt($(this).text());
       });
       $(".totalPrice").text($totalPrice + "€");
+      $.ajax({
+        type: "post",
+        url: Cart.baseUrl + "/cart/change",
+        data: {
+          articleId: elem.getAttribute("articleId"),
+          count: elem.value
+        },
+        success: function success(data) {
+          console.log(data);
+        }
+      });
     } // Customer would like to order the Article(s) in Cart
 
   }, {
     key: "order",
     value: function order() {
-      //localStorage.removeItem('articles');
-      var articles = JSON.parse(localStorage.getItem('articles')); //Add the Attribute articleCount to each article in articles
-
-      $(".articleCount").each(function (index) {
-        articles[index].articleCount = this.value;
-      });
       $.ajax({
         type: "post",
         url: Cart.baseUrl + "/order/checkLogin",
-        data: {
-          articles: articles
-        },
         success: function success(user) {
-          if (user == 'admin') {
+          if (user.type == 'admin') {
             $(".no-order .admin").addClass('messageAdmin');
-          } else if (user == 'customer') {
-            var articles = JSON.parse(localStorage.getItem('articles'));
+          } else if (user.type == 'customer') {
+            console.log(user.articles);
 
-            if (articles.length > 0) {
+            if (user.articlesCount > 0) {
               var deliveryAddressId = $(".delivery-address-id").val();
               window.location.replace(Cart.baseUrl + "/order/pay/" + deliveryAddressId);
             } else {
@@ -20182,7 +20076,7 @@ $('.pay-btn').click(function () {
 
 var order;
 $(".order-delete").click(function (e) {
-  e.pereventDefault;
+  e.pereventDefault();
   order = new Order($(this).attr("invoiceId"), $(this).attr("orderId"), $(this).attr("email"), 'delete');
   order.alertQuestion("Möchten Sie Wircklich diese Bestellung stönieren?");
   order.showAlert();
@@ -20203,7 +20097,7 @@ $('.order-alert-yes').click(function () {
 }); //Button .order-delivered clicked => show Alert
 
 $('.order-deliver').click(function (e) {
-  e.preventDefault;
+  e.preventDefault();
   order = new Order($(this).attr("invoiceId"), $(this).attr("orderId"), $(this).attr("email"), 'deliver');
   order.alertQuestion("Wurde diese Bestellung wircklich geliefert?");
   order.showAlert();
@@ -20314,41 +20208,6 @@ $('.product-pagination .left-btn').click(function () {
 
 $('.product-pagination .right-btn').click(function () {
   pagination.right();
-});
-
-/***/ }),
-
-/***/ "./resources/js/productController/index/paginationAjax.js":
-/*!****************************************************************!*\
-  !*** ./resources/js/productController/index/paginationAjax.js ***!
-  \****************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-//get the baseUrl of website
-var baseUrl = window.location.origin; //Click a Button in the Pagination in 'Product Page'
-
-$('.product-nav-link').click(function () {
-  //Get the Articles from productController from Method 'Show' per Ajax
-  $.ajax({
-    type: "post",
-    url: baseUrl + "/product/show",
-    data: {
-      //Send the Page Nummber 'in evry Buttuns exisits the Pagenummber as an Attributte'
-      page: this.getAttribute('page')
-    },
-    success: function success(articles) {
-      //Empty the Div '.products-content-index' to accept the new Articles
-      $(".products-content-index").empty(); //Empty the Div '.products-content-pagination' to accept the new Articles
-
-      $(".products-content-pagination").empty(); //Use map Function to clear the Multidimensional Array 'Articles'.The Index of Array 'Articles' DONT begin from 0.(Skip && take Laravel)
-
-      $.map(articles, function (article) {
-        //Append all Results 'Articles' in Div '.products-content-pagination'
-        $('.products-content-pagination').append("<div class='card col-md-3'>" + "<a href=" + baseUrl + "/product/myProduct/" + article.id + "> <img class='card-img-top' src='" + article.mainPhoto + "' alt='Card image cap'></a>" + "<div class='card-body'>" + "<div class='card-title row'> <h5 class='col-6'><a class='text-decoration-none text-dark' href=" + baseUrl + "/product/myProduct/" + article.id + ">" + article.articleName + "</a></h5> <h5 class='col-6 text-right text-dark' style='text-align: right'>" + article.price + "€</h5></div>" + "<p class='card-text'>" + article.description.substring(0, 100) + "</p>" + "</div>" + "<div articleId=" + article.id + " class='card-body addToCart'>" + "<a  class='btn btn-danger'>In den Warenkorb <i class='fa fa-shopping-cart' aria-hidden='true' style='color: white'></i></a>" + "</div>" + "</div>");
-      });
-    }
-  });
 });
 
 /***/ }),
