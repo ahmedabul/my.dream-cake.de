@@ -9,7 +9,7 @@
             <div class="accordion-item">
                 <h2 class="accordion-header" id="heading{{$invoice[0]->orderId}}">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{$invoice[0]->orderId}}" aria-expanded="true" aria-controls="collapseOne">
-                        {{$invoice[0]->orderDate}}
+                        {{date('d-m-Y', strtotime($invoice[0]->orderDate))}}
                     </button>
                 </h2>
                 <div id="collapse{{$invoice[0]->orderId}}" class="accordion-collapse collapse " aria-labelledby="heading{{$invoice[0]->orderId}}" data-bs-parent="#accordionExample">
