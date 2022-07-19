@@ -10,7 +10,7 @@ class loginController extends Controller
 {
     public function form()
     {
-        return view('authenticate.login.form');
+        return view('authenticate.login.form'); 
     }
     public function check(Request $request)
     {
@@ -23,7 +23,7 @@ class loginController extends Controller
       {
         return redirect()->route('driver.index');
       }
-      return redirect()->back()->with('sts','E-mail oder Password ist leider falsch');
+      return redirect()->back()->with('sts','E-mail oder Passwort ist leider falsch');
     }
     
     public function logout()
