@@ -59,39 +59,27 @@
                 </div>
             </div>
         </div>
-
     </div>
-    <div class="accordion mb-5" id="accordionExample">
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingOne">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-              <h3 class="text-info">Kundenkomentar</h3>
-            </button>
-          </h2>
-          <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-            <div class="accordion-body">
-                @foreach ($comments as $comment)
-                <div class="accordion-item mt-1 bg-dark">
-                    <h4 class="accordion-header bg-secondary" id="headingOne">
-                        {{$comment->lastName}} {{$comment->firstName}}
-                        @for ($i = 0; $i < $comment->stars; $i++)
-                       <span class="text-warning"> <i class="fa fa-star" aria-hidden="true"></i></span>
-                        @endfor
-                        @for ($i = 0; $i < 5-$comment->stars; $i++)
-                        <span>  <i class="fa fa-star" aria-hidden="true"></i></span>
-                         @endfor
-                    </h4>
-                    <div id="{{$comment->id}}" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                        <div class="accordion-body text-white">
-                            {{$comment->customerComment}}
-                        </div>
-                    </div>
-                </div>
-            @endforeach
+    <div class="comment">
+        <div class="container">
+            @foreach ($comments as $comment)
+            <div class="head">
+                <span><span style="font-size: 30px"><i class="fa fa-user-circle" aria-hidden="true"></i></span> <span style="font-size: 25px">{{$comment->lastName}} {{$comment->firstName}}</span><br>
+                    @for ($i = 0; $i < $comment->stars; $i++)
+                    <span class="text-warning"> <i class="fa fa-star" aria-hidden="true"></i></span>
+                    @endfor
+                    @for ($i = 0; $i < 5-$comment->stars; $i++)
+                    <span>  <i class="fa fa-star" aria-hidden="true"></i></span>
+                    @endfor
+                </span>
             </div>
+            <div class="body">
+                {{$comment->customerComment}}
+            </div>
+            @endforeach
         </div>
-      </div>
     </div>
+
     <div class="cart-alert d-none">
         <div class="message-md w-50 d-none d-md-block">
             <h2 class="text-center">Das Artikel ist schon im Warenkorb!!!</h2>

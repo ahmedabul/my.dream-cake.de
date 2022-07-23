@@ -14,7 +14,7 @@ class driverController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('admin')->except(['index','deliver','deliverConfirm','deliverCancel','cancelConfirm']);
+        $this->middleware('admin')->except(['index','deliver','deliverConfirm','cancelConfirm']);
     }
     public function create()
     {
@@ -72,78 +72,47 @@ class driverController extends Controller
         //Get all Orders, they should be delivered from a Driver
         $invoices=Driver::driverIndex();  
         
-        return view('driver.index',compact('invoices'));
+        return view('driver.index',compact('invoices')); 
     }
-    public function deliver($invoiceId)
+    public function deliver(Request $request)
     {
+        //Driver had not chosed any Order
+        if(empty($request->delivered))
+        {
+            return redirect()->back();
+        }
         //Get Orders, they the Driver will deliver now
-        $orders=Driver::deliver($invoiceId); 
+        $orders=[];
+        foreach($request->delivered as $index =>$orderId)
+        {
+        array_push($orders,Driver::deliver($orderId));
+        }
         return view('driver.deliver',compact('orders'));
     }
     public function deliverConfirm(Request $request)
     {
-    
         //Validation, if the Driver will deliver the Article at a Neighbor
         if($request->articlePlace=='neighbor')
         {
             $validation=deliverConfirmValidation($request->nameOfNeighbor, $request->streetOfNeighbor, $request->hausNrOfNeighbor);
            if($validation->fails())
            {
-               return redirect()->back()->with('messages',$validation->errors()->messages())->withInput();
+               return redirect()->route('driver.index')->with('messages',$validation->errors()->messages());
            }
         }
         //Get Orders, they the Driver delivered to send an Email to Customer
-        $orders=Driver::deliver($request->invoiceId);
-        //Driver confirms the Deliver
-         driverConfirmDeliver($request);
+        $orders=[];
+        foreach($request->orderIds as $index =>$orderId)
+        {
+            //Driver confirms the Deliver
+            driverConfirmDeliver($request->nameOfNeighbor, $request->streetOfNeighbor, $request->hausNrOfNeighbor, $orderId, $request->articlePlace);
+            array_push($orders,Driver::deliver($orderId));
+        }
 
         //Send E-Mail to Customer with details of the Delivery
         Mail::to($request->email)->send(new orderDeliveredEmail($orders));
        return redirect()->route('driver.index');
     }
-    public function deliverCancel($orderId)
-    {
-        $order=Order::find($orderId);
-        $cancelCount=$order->articleCount-$order->yesAcceptCount-$order->demagedArticle;
-        if($cancelCount==0)
-        {
-        return redirect()->back();
-        }
-        return view('driver.deliverCancel',['toDeliverCount'=>$cancelCount,'orderId'=>$orderId]);
-    }
-    public function cancelConfirm(Request $request)
-    {
-        //validation 
-        if($request->toDeliverCount>1)
-        {
-            if(empty($request->demagedArticle) or empty($request->reasonCancel))
-            {
-                return redirect()->back()->with(['sts'=>'Antworten Sie bitte auf den beiden Fragen!!']);
-            }
-        }
-        else
-        {
-            if(empty($request->reasonCancel))
-            {
-                return redirect()->back()->with(['sts'=>'Begründen Sie bitte, warum Sie die Bestellung Stönieren wöllen!!']);
-            }
-        }
-        //Get Count of the demaged Article
-        $order=Order::find($request->orderId);
-        //calculate demagedArticle
-        $demagedArticle=$order->demagedArticle+$request->demagedArticle;
-        //Get the old reasonCancel
-        $oldReasonCancel=$order->reasonCancel;
-        //Update Order
-        Order::where('id',$request->orderId)
-        ->update([
-            'cancelDecision'=>'fahrer',
-            'reasonCancel'=>$oldReasonCancel.'--'.$request->demagedArticle.'.'.$request->reasonCancel.'--',
-            'demagedArticle'=>$demagedArticle,
-            'toDeliverCount'=>$demagedArticle,
-        ]);
-
-        return redirect()->route('driver.index');
-    }
+  
 
 }

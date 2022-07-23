@@ -649,6 +649,20 @@
   }
 }
 
+.comment {
+  margin-bottom: 100px;
+}
+
+.comment .head {
+  width: 50%;
+  border-bottom: 1px solid gray;
+}
+
+.comment .body {
+  width: 50%;
+  margin-top: 10px;
+}
+
 .navbar {
   position: fixed;
   top: 0;
@@ -874,9 +888,8 @@
 }
 
 .cancel-form {
-  height: 100%;
-  width: 100%;
-  position: fixed;
+  margin-top: 70px;
+  padding: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1196,6 +1209,38 @@
   border-top: 3px solid silver;
 }
 
+.alert-messages {
+  margin-top: 10px;
+  height: 300px;
+  overflow: hidden;
+}
+
+.alert-messages .message {
+  transform: translateY(-300px);
+  -webkit-animation: alert-message-driver 1s linear forwards;
+          animation: alert-message-driver 1s linear forwards;
+}
+
+@-webkit-keyframes alert-message-driver {
+  from {
+    transform: translateY(-300px);
+  }
+
+  to {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes alert-message-driver {
+  from {
+    transform: translateY(-300px);
+  }
+
+  to {
+    transform: translateY(0px);
+  }
+}
+
 .driver-deliver .nav {
   margin-top: 50px;
   display: flex;
@@ -1225,7 +1270,7 @@
 
 .accept-order {
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-  color: gray;
+  color: dimgray;
 }
 
 .accept-order .container {
@@ -1248,16 +1293,14 @@
 }
 
 .accept-order .container .body {
-  width: 50%;
   margin: auto;
 }
 
 .accept-order .container .body textarea {
-  background-color: #1a0a0a;
+  background-color: white;
   width: 100%;
-  height: 150px;
-  color: aliceblue;
-  font-size: 20px;
+  height: 200px;
+  color: gray;
 }
 
 .order-return .body .tables {
@@ -1267,43 +1310,31 @@
   border-radius: 50px;
 }
 
-.order-goToResearch {
-  margin-top: 70px;
+.order-goToResearch .card {
+  margin: auto;
+  margin-top: 100px;
 }
 
-.order-goToResearch .header {
-  background-color: black;
-  width: 100%;
-  padding: 50px;
+.order-goToResearch .card .card-body .card-title {
+  border-bottom: 3px solid gray;
 }
 
-.order-goToResearch .header h2 {
-  color: #F60B1C;
-  border-bottom: 5px solid #F60B1C;
-  width: 90%;
+.order-goToResearch .card .card-body .card-subtitle {
+  margin-top: 10px;
 }
 
-.order-goToResearch .header label {
-  color: wheat;
+.order-goToResearch .card .card-body .blockquote-footer {
+  margin-top: 20px;
 }
 
-.order-goToResearch .header input {
+.order-goToResearch .card .card-body input {
   border: none;
-  background: none;
-  outline: none;
-  border-bottom: 1px solid #F60B1C;
-  background-color: black;
-  color: wheat;
-  font-size: 18px;
-  margin-bottom: 10px;
-  width: 90%;
-  margin-left: 5px;
-  -webkit-appearance: none;
+  border-bottom: 1px solid gray;
 }
 
-.order-goToResearch .header .btn {
-  width: 90%;
-  margin-left: 5px;
+.order-goToResearch .line {
+  margin-top: 50px;
+  border-bottom: 1px solid #F60B1C;
 }
 
 .order-goToResearch .body {
@@ -1624,12 +1655,11 @@
   padding: 10px;
 }
 
-.footer {
+.footer-layout {
   background-color: black;
   opacity: 0.8;
   padding: 20px;
   height: 235px;
   color: silver;
-  margin-top: 20px;
 }
 

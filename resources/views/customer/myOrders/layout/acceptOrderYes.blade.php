@@ -2,53 +2,54 @@
     <div class="container">
         <form action="{{Route('myOrders.comment')}}" method="POST">
             @csrf 
-              <input type="hidden" name="comment" value="yesAccept">
               <input type="hidden" name="orderId" value="{{$article->orderId}}">
             <div class="header">
-                <h2 class="text-center text-success articleName"><ins>{{$article->articleName}}</ins></h2>
-                <img src="{{$article->mainPhoto}}" alt="">
+                <h2 class="text-center text-danger articleName"><ins>{{$article->articleName}}</ins></h2>
                 <h2 class="text-center"><ins>Ihre Meinung liegt uns am Herzen!</ins></h2>
-                <p class="text-center">Bitte nehmen Sie sich ein paar Minuten Zeit, um die folgende Umfrage auszufüllen.</p>
+                <img src="{{$article->mainPhoto}}" alt="">
             </div>
-            <div class="body">
-                <h4 class="text-center">Laut unserem System  wurde(n) {{$article->articleCount-$article->demagedArticle}} Artikel(n) von Produkt {{$article->articleName}} zugestellt.</h4>
-                <h4 class="mt-5">Wie viele Artikeln haben Sie angenohmen?</h4>
-                @for($i=0;$i<$countAcceptedArticles;$i++)
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="article" id="flexRadioDefault1" value="{{$i+1}}">
-                    <label class="form-check-label" for="flexRadioDefault1">
-                      @if($i==0)
-                        {{$i+1}} Artikel
-                      @else
-                        {{$i+1}} Artikeln 
-                      @endif
-                    </label> 
+            <div class="body mt-5">
+                <div class="row">
+                    <div class="col-md-12">
+                        <span style="font-size: 35px">
+                            <i class="fa fa-user-circle" aria-hidden="true"></i>
+                        </span>
+                        <span style="font-size: 20px"> 
+                            {{Auth::guard('customer')->user()->lastName}} {{Auth::guard('customer')->user()->firstName}},
+                        </span>
+                    </div>
+                        <p>Dieses Produkt bewerten.</p>
+                    
+                    <div class="mt-2 col-md-6">
+                        <h5>Kundenrezensionen {{$article->articleName}}
+                        @for($i=0;$i<=4;$i++)
+                        <i class="fa fa-star text-warning" aria-hidden="true"></i>
+                        @endfor
+                        </h5>
+                        @for ($i = 0; $i < 5; $i++)
+                        <div class="form-check">
+                            @if ($i==0) 
+                            <input class="form-check-input" type="radio" name="stars" value="{{$i+1}}">
+                            <label class="form-check-label" for="flexRadioDefault1">{{$i+1}} Stern</label>
+                            @else
+                            <input class="form-check-input" type="radio" name="stars" value="{{$i+1}}">
+                            <label class="form-check-label" for="flexRadioDefault1">{{$i+1}} Sterne</label>
+                            @endif
+                            <div class="progress">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width:{{$i*25}}%" aria-valuenow="{{$i*25}}" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        @endfor
+                    </div>
+                    <div class="col-md-6">
+                        <h5 class="mt-2">Sagen Sie Ihre Meinung zu diesem Artikel.</h5>
+                        <textarea name="customerComment" placeholder="...." maxlength="300">{{ old('customerComment') }}</textarea>
+                    </div>
                 </div>
-                @endfor
-                <div class="mt-2">
-                  <h4>Wie viele Sterne geben Sie dem Artikel {{$article->articleName}}</h4>
-                  @for ($i = 0; $i < 5; $i++)
-                  <div class="form-check">
-                    @if ($i==0)
-                    <input class="form-check-input" type="radio" name="stars" value="{{$i+1}}">
-                    <label class="form-check-label" for="flexRadioDefault1">{{$i+1}} Stern</label>
-                    @else
-                    <input class="form-check-input" type="radio" name="stars" value="{{$i+1}}">
-                    <label class="form-check-label" for="flexRadioDefault1">{{$i+1}} Sterne</label>
-                    @endif
-                  </div>
-                  @endfor
-                </div>
-                  
-
-                <h4 class="mt-2">Bewerten Sie bitte das Artikel {{$article->articleName}}</h4>
-                <textarea name="customerComment" placeholder="Das Artikel '{{$article->articleName}}' ...." maxlength="300"></textarea>
             </div>
-            <div class="footer">
-                <div class="text-center">
-                <button class="btn btn-success w-50" type="submit">Speichern</button>
-                </div>
-            </div> 
+            <div class="text-center mt-5">
+                <button class="btn btn-danger w-50" type="submit">Speichern</button>
+            </div>
         </form>
     </div>
 </div> 

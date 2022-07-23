@@ -22,7 +22,7 @@ class Invoice extends Model
     {
         $this->belongsTo('App\Driver');
     }
-    public static function getInvoices($customerId)
+    public static function getInvoices($customerId) 
     {
        return getCustomerInvoicess($customerId); 
     }

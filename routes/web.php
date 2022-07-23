@@ -76,20 +76,18 @@ Route::group(['prefix'=>'order'],function(){
   route::get('cancelForm/{orderId}/{email}','orderController@cancelForm')->name('order.cancelForm')->middleware('admin');
   route::post('cancel','orderController@cancel')->name('order.cancel')->middleware('admin');
   route::post('deliver','orderController@deliver')->name('order.deliver')->middleware('admin');
-  route::get('ordersToDrivers','orderController@ordersToDrivers')->name('order.ordersToDrivers')->middleware('admin');
   route::post('orderDriverSave','orderController@orderDriverSave')->name('order.orderDriverSave')->middleware('admin');
-  route::get('return','orderController@return')->name('order.return')->middleware('admin');
+  route::get('allOrders','orderController@allOrders')->name('order.allOrders')->middleware('admin');
   route::get('goToResearch','orderController@goToResearch')->name('order.goToResearch')->middleware('admin');
   route::post('research','orderController@research')->name('order.research')->middleware('admin');
   route::get('show/{orderId}','orderController@show')->name('order.show')->middleware('admin');
-  route::post('unlock','orderController@unlock')->name('order.unlock')->middleware('admin');
+  route::get('finish/{orderId}/{key}','orderController@finish')->name('order.finish')->middleware('admin');
 });
 /*Customer Orders*/
 Route::group(['prefix'=>'customer','namespace'=>'customer'],function(){
   route::get('myOrders','myOrdersController@index')->name('myOrders.index');
   route::get('acceptOrder/{answer}/{orderId}','myOrdersController@acceptOrder')->name('myOrders.acceptOrder');
   route::post('comment','myOrdersController@comment')->name('myOrders.comment');
-  route::get('details/{orderId}','myOrdersController@details')->name('myOrders.details');
 });
 /*Customer Profile*/
 Route::group(['prefix'=>'customer','namespace'=>'customer'],function(){
@@ -106,10 +104,9 @@ Route::group(['prefix'=>'driver'],function(){
   route::get('show','driverController@show')->name('driver.show');
   route::get('edit/{id}','driverController@edit')->name('driver.edit');
   route::post('update','driverController@update')->name('driver.update');
-  route::get('deliver/{invoiceId}','driverController@deliver')->name('driver.deliver')->middleware('driver');
+  route::post('deliver','driverController@deliver')->name('driver.deliver')->middleware('driver');
   route::post('deliverConfirm','driverController@deliverConfirm')->name('driver.deliverConfirm')->middleware('driver');
-  route::get('deliverCancel/{orderId}','driverController@deliverCancel')->name('driver.deliverCancel')->middleware('driver');
-  route::post('cancelConfirm','driverController@cancelConfirm')->name('driver.cancelConfirm')->middleware('driver');
+
 });
 
 /*Paypal*/

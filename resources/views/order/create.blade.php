@@ -13,7 +13,6 @@
                         <tr>
                             <th>Article</th>
                             <th>Photo</th>
-                            <th>Anzahl</th>
                             <th>Price</th>
                         </tr>
                     </thead>
@@ -22,10 +21,9 @@
                             <tr>
                                 <td >{{$order->articleName}}</td>
                                 <td><img src="{{$order->mainPhoto}}"></td>
-                                <td>{{$order->articleCount}}</td>
-                                <td>{{$order->articleCount*$order->price}}€</td>
+                                <td>{{$order->price}}€</td>
                                 @php
-                                    $totalPrice+=$order->articleCount*$order->price;
+                                    $totalPrice+=$order->price;
                                 @endphp
                             </tr>
                         </tbody>

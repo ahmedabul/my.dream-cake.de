@@ -78,3 +78,15 @@ $mainColor: #F60B1C;
         transform: translateY(0px);
     }
 }
+
+.comment {
+    margin-bottom: 100px;
+    .head {
+        width: 50%;
+        border-bottom: 1px solid gray,
+    }
+    .body {
+        width: 50%;
+        margin-top: 10px;
+    }
+}

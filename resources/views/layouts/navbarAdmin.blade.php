@@ -19,12 +19,11 @@
       <li><a class="dropdown-item ml-2  disabled" href="{{Route('order.index',['date'=>'AfterTomorrow'])}}">Übermorgen.. </a></li>
       <li><a class="dropdown-item ml-2  disabled" href="{{Route('order.index',['date'=>'After3Days'])}}">In drei Tagen.. </a></li>
       <li><a class="dropdown-item ml-2  " href="{{Route('order.goToResearch')}}">Suchen</a></li>
-      <li><a class="dropdown-item ml-2  fw-bold" href="{{Route('order.return')}}">Rücklauf</a></li>
+      <li><a class="dropdown-item ml-2  fw-bold" href="{{Route('order.allOrders')}}">Bestellung</a></li>
     <li><hr class="dropdown-divider"></li>
     <li class="text-danger">Fahrer</li>
       <li><a class="dropdown-item ml-2" href="{{Route('driver.create')}}">Neuer Fahrer</a></li>
       <li><a class="dropdown-item ml-2" href="{{Route('driver.show')}}">Fahrer suchen</a></li>
-      <li><a class="dropdown-item ml-2 fw-bold " href="{{Route('order.ordersToDrivers')}}">Drivers &Orders</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><a class="dropdown-item" href="{{Route('login.logout')}}">Logout</a></li>
     </ul>

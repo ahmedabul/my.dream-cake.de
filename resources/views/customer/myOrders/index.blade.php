@@ -18,13 +18,12 @@
                             <table class="table table-dark table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Artikel</th>
+                                        <th>Artikel</th> 
                                         <th>Foto</th>
-                                        <th>Bestellte Anzahl</th>
                                         <th>Preis</th>
                                         <th>Zustand der Bestellung</th>
-                                        <th class="text-center">Bestätigen</th>
                                         <th>Lieferungsdetails</th>
+                                        <th>Bestätigen</th>
                                     </tr>
                                 </thead>
                                 @foreach ($invoice as $order)
@@ -32,31 +31,33 @@
                                         <tr>
                                             <td >{{$order->articleName}}</td>
                                             <td><img src="{{$order->mainPhoto}}"></td>
-                                            <td>{{$order->articleCount}}</td>
-                                            <td>{{$order->articleCount*$order->price}}€</td>
-                                            @php
-                                                $totalPrice+=$order->articleCount*$order->price;
+                                            <td>{{$order->price}}€</td>
+                                            @php 
+                                                $totalPrice+=$order->price;
                                             @endphp
-                                            @if($order->orderDelivered=='no')
-                                                @if($order->cancelDecision=='admin')
-                                                    <td class="text-danger">Stöniert</td>
-                                                @else
-                                                    <td class="text-warning">Am arbeiten</td>
-                                                @endif
+                                            @if($order->ready=='0')
+                                                <td class="text-warning">Am arbeiten <i class="fa fa-birthday-cake" aria-hidden="true"></i></td>
                                                 <td>---</td>
                                                 <td>---</td>
                                             @else
-                                                @if(empty($order->demagedArticle))
-                                                    <td class="text-success">{{$order->toDeliverCount}} Artikel(n) zugestellt</td> 
+                                                @if($order->delivered==0)
+                                                    <td class="text-warning">Unterwegs <i class="fa fa-truck" aria-hidden="true"></i></td>
+                                                    <td>---</td>
+                                                    <td>---</td>
                                                 @else
-                                                    <td class="text-danger">{{$order->articleCount-$order->toDeliverCount}} Artikel(n) zugestellt</td> 
+                                                    <td class="text-success">Zugestellt <i class="fa fa-thumbs-up" aria-hidden="true"></i></td>
+                                                    <td><small>{{$order->articlePlace}}</small></td>
+                                                    @if($order->accept=='1')
+                                                    <td class="text-success"><h2><i class="fa fa-check" aria-hidden="true"></i></h2></td>
+                                                    @elseif($order->damaged=='1')
+                                                    <td class="text-warning"><h2><i class="fa fa-frown" aria-hidden="true"></i></h2></td>
+                                                    @elseif($order->noAccept=='1')
+                                                    <td class="text-danger"><h2><i class="fa fa-times" aria-hidden="true"></i></h2></td>
+                                                    @else
+                                                    <td style="width: 250px"><small>Haben Sie Ihre Sendung angenomen?</small><br><a class="btn btn-success" href="{{Route('myOrders.acceptOrder',['answer'=>'yes','orderId'=>$order->orderId])}}">Ja</a> <a class="btn btn-danger" href="{{Route('myOrders.acceptOrder',['answer'=>'no','orderId'=>$order->orderId])}}">Nein</a> <a class="btn btn-warning" href="{{Route('myOrders.acceptOrder',['answer'=>'damaged','orderId'=>$order->orderId])}}">beschädigt</a></td>
+                                                    @endif
+                                                    
                                                 @endif
-                                                @if(($order->demagedArticle+$order->noAcceptCount+$order->yesAcceptCount+$order->demagedAcceptCount)<$order->articleCount)
-                                                    <td> <a class="btn btn-success" href="{{Route('myOrders.acceptOrder',['answer'=>'yes','orderId'=>$order->orderId])}}">Ja</a> <a class="btn btn-danger" href="{{Route('myOrders.acceptOrder',['answer'=>'no','orderId'=>$order->orderId])}}">Nein or Unvollstängig</a> <a class="btn btn-warning" href="{{Route('myOrders.acceptOrder',['answer'=>'demaged','orderId'=>$order->orderId])}}">Beschädigt</a></td>
-                                                @else 
-                                                    <td class="text-danger text-center">---</td>
-                                                @endif
-                                                <td><a href="{{Route('myOrders.details',['orderId'=>$order->orderId])}}" class="btn btn-light">Details</a></td>
                                             @endif
                                         </tr>
                                     </tbody>

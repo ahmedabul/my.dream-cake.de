@@ -13,3 +13,22 @@
         border-top: 3px solid silver;
     }
 }
+
+.alert-messages {
+    margin-top: 10px;
+    height: 300px;
+    overflow: hidden;
+    .message {
+        transform: translateY(-300px);
+        animation: alert-message-driver 1s linear forwards;
+    }
+}
+
+@keyframes alert-message-driver {
+    from {
+        transform: translateY(-300px);
+    }
+    to {
+        transform: translateY(0px);
+    }
+}

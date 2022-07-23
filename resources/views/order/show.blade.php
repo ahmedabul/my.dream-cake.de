@@ -1,123 +1,72 @@
 @extends('app')
 @section('content')
     <div class="order-show" style="margin-top: 150px">
-        <table class="table table-dark text-center">
-            <thead>
-                <tr>
-                  <th>Article</th>
-                  <th>Foto</th>
-                  <th>Preis</th>
-                  <th>BestellteAnzahl</th>
-                  <th>orderDelivered</th>  
-                </tr>
-              </thead>
-              <tbody>
-                <tr> 
-                    <td>{{$order->articleName}}</td>
-                    <td><img src="{{$order->mainPhoto}}" style="width: 50px; height:50px"></td>
-                    <td>{{$order->price}}€</td> 
-                    <td>{{$order->articleCount}}</td>
-                    <td>{{$order->orderDelivered}}</td>
-                  </tr>
-              </tbody>
-        </table>
-        <table class="table table-dark text-center">
+      <div class="container"> 
+        <div class="row">
+          <div class="customer-data col-md-6 text-center">
+            <p><i class="fa fa-user-circle" aria-hidden="true" style="font-size: 40px;"></i><span style="font-size: 30px;border-bottom:1px solid black">Kunde Daten</span></p>
+            <p  style="font-size: 20px; margin-left:40px">{{$customerAddres->lastName}} {{$customerAddres->firstName}}<br>
+              {{$customerAddres->street}} {{$customerAddres->hausNr}}<br>
+              {{$customerAddres->city}} {{$customerAddres->plz}}
+            </p>
+          </div>
+          <div class="deliveryAddress col-md-6">
+            <p><i class="fa fa-truck" aria-hidden="true" style="font-size: 40px;"></i><span style="font-size: 30px;border-bottom:1px solid black">Lieferadresse</span></p>
+            <p  style="font-size: 20px; margin-left:40px">{{$order->lastName}} {{$order->firstName}}<br>
+              {{$order->street}} {{$order->hausNr}}<br>
+              {{$order->city}} {{$order->plz}}
+            </p>
+          </div>
+        </div>
+        <table class="table mt-5">
           <thead>
-              <tr>
-                <th>demagedArticle</th>
-                <th>noAcceptCount</th>
-                <th>demagedAcceptCount</th>
-                <th>cancelCount</th>
-
-              </tr>
+            <tr>
+              <th scope="col">Rechnung-Nr</th>
+              <th scope="col">Bestellung-Nr</th>
+              <th scope="col">Article</th>
+              <th scope="col">Versuch-Nr</th>
+              <th>Zustand der Bestellung</th>
+              <th>Lieferungsdetails</th>
+              <th>Bestätigung des Kunden</th>
+            </tr>
           </thead>
           <tbody>
             <tr>
-              @if (!empty($order->demagedArticle))
-              <td>{{$order->demagedArticle}}</td>
+              <th>{{$order->invoice_id}}</th> 
+              <td>{{$order->orderId}}</td>
+              <td>{{$order->articleName}}</td>
+              <td>{{$order->tryCount}}</td>
+              @if($order->ready=='0')
+              <td class="text-warning">Am arbeiten <i class="fa fa-birthday-cake" aria-hidden="true"></i></td>
+              <td>---</td>
+              <td>---</td>
+          @else
+              @if($order->delivered==0)
+                  <td class="text-warning">Unterwegs <i class="fa fa-truck" aria-hidden="true"></i></td>
+                  <td>---</td>
+                  <td>---</td>
               @else
-                  <td>--</td>
+                  <td class="text-success">Zugestellt <i class="fa fa-thumbs-up" aria-hidden="true"></i></td>
+                  <td><small>{{$order->articlePlace}}</small></td>
+                  @if($order->accept=='1')
+                  <td class="text-success"><h2><i class="fa fa-check" aria-hidden="true"></i></h2><small>angenomen</small></td>
+                  @elseif($order->damaged=='1')
+                  <td class="text-warning"><h2><i class="fa fa-frown" aria-hidden="true"></i></h2><small>beschädigt</small></td>
+                  @elseif($order->noAccept=='1')
+                  <td class="text-danger"><h2><i class="fa fa-times" aria-hidden="true"></i></h2><small>NICHT angenomen</small></td>
+                  @else
+                  <td style="width: 250px">Der Kunde hat sich nicht reagiert</td>
+                  @endif
+                  
               @endif
-
-              @if($order->orderDelivered=='yes')
-              <td> 
-                <p class="text-warning">{{$order->noAcceptCount}}</p>
-                <select  id="noAcceptCount" name="noAcceptCountt" orderId="{{$order->orderId}}">
-                 <option value="null"></option>
-                 <option value="unlock">Frei Schalten</option>
-                  @for ($i = 0; $i < ($order->articleCount-$order->demagedArticle)-($order->noAcceptCount+$order->demagedAcceptCount+$order->cancelCount); $i++)
-                    <option value="{{$i+1}}">{{$i+1}}Artikeln</option>
-                  @endfor
-                </select>
-              </td>
-              @else
-                <td>--</td>
-              @endif
-
-            @if($order->orderDelivered=='yes')
-            <td> 
-              <p class="text-warning">{{$order->demagedAcceptCount}}</p>
-              <select name="demagedAceptCount" id="demagedAcceptCount" orderId="{{$order->orderId}}">
-               <option value="null"></option>
-               <option value="unlock">Frei Schalten</option>
-                @for ($i = 0; $i < ($order->articleCount-$order->demagedArticle)-($order->noAcceptCount+$order->demagedAcceptCount+$order->cancelCount); $i++)
-                  <option value="{{$i+1}}">{{$i+1}}Artikeln</option>
-                @endfor
-              </select>
-            </td>
-            @else
-              <td>--</td>
-            @endif
-            @if (!empty($order->cancelCount))
-            <td>
-              <p class="text-danger">{{$order->cancelCount}}</p>
-              <p><a class="btn btn-danger" orderId="{{$order->orderId}}" id="cancelCount-unlock-btn">Frei Schalten</a></p>
-            </td>  
-            @else
-                 <td>--</td>
-            @endif
+          @endif
             </tr>
           </tbody>
         </table>
-        <table class="table table-dark text-center">
-          <thead>
-              <tr>
-                <th>cancelDecision</th>
-                <th>reasonCancel</th>
-                <th>adminReaktion</th>
-                <th >articlePlace</th>
-              </tr>
-          </thead>
-          <tbody>
-            <tr>
-          @if (!empty($order->cancelDecision))
-          <td>{{$order->cancelDecision}}</td>  
-          @else
-               <td>--</td>
-          @endif
-                       
-          @if (!empty($order->reasonCancel))
-          <td>{{$order->reasonCancel}}</td>
-          @else
-            <td>--</td>
-          @endif
-          @if (!empty($order->adminReaktion))
-          <td>{{$order->adminReaktion}}</td>
-          @else
-               <td>--</td>
-          @endif
-          @if (!empty($order->articleCount))
-          <td>{{$order->articlePlace}}</td>
-          @else
-               <td>--</td>
-          @endif
-          <tr>
-          </tbody>
-    </table>
+      </div>
         <div class="text-center">
           <a href="{{Route('order.goToResearch')}}" class="btn btn-dark w-25 w-25 ml-3">Zurück</a>
-          <a  href="{{Route('order.cancelForm',['orderId'=>$order->orderId,'email'=>$order->email])}}" class="btn btn-danger w-25 w-25">Stönieren</a>
-
+          <a  href="{{Route('order.cancelForm',['orderId'=>$order->orderId,'email'=>$order->email])}}" class="btn btn-danger w-25 w-25">Störnieren</a>
         </div> 
     </div>
 @endsection

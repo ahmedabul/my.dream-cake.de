@@ -1,5 +1,5 @@
 @extends('app')
-@section('content')
+@section('content') 
     <div class="driver-deliver">
         <div class="nav">
         <ul class="nav nav-tabs" id="myTab" role="tablist">

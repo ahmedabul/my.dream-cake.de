@@ -20125,10 +20125,10 @@ $(".order-goToResearch input[name='research']").keyup(function () {
       $(".order-goToResearch .body").empty();
       console.log(invoices);
       $(invoices).each(function (invoice, orders) {
-        var invoiceString = "<table class='table text-center mb-5'>" + "<thead>" + "<tr>" + "<th>Article</th>" + "<th>Vorname</th>" + "<th>Nachname</th>" + "<th>RechnungNr</th>" + "<th>BestellungNr" + "<th>Strasse</th>" + "<th>Stadt</th>" + "<th>Bestellungsdatum</th>" + "<th>Bestellte_Anzahl</th>" + "<th>Update</th>";
+        var invoiceString = "<table class='table text-center mb-5'>" + "<thead>" + "<tr>" + "<th>Article</th>" + "<th>RechnungNr</th>" + "<th>BestellungNr" + "<th>Vorname <i class='fa fa-truck aria-hidden=true' style='font-size: 20px;'></i></th>" + "<th>Nachname <i class='fa fa-truck aria-hidden=true' style='font-size: 20px;'></i></th>" + "<th>Strasse <i class='fa fa-truck aria-hidden=true' style='font-size: 20px;'></i></th>" + "<th>Stadt <i class='fa fa-truck aria-hidden=true' style='font-size: 20px;'></i></th>" + "<th>Bestellungsdatum</th>" + "<th>Update</th>";
         "</tr>" + "</thead><tbody>";
         $(orders).each(function (orders, order) {
-          invoiceString += "<tr>" + "<td>" + order.articleName + "</td>" + "<td>" + order.firstName + "</td>" + "<td>" + order.lastName + "</td>" + "<td>" + order.invoiceId + "</td>" + "<td>" + order.orderId + "</td>" + "<td>" + order.street + order.hausNr + "</td>" + "<td>" + order.city + order.plz + "</td>" + "<td>" + order.orderDate + "</td>" + "<td>" + order.articleCount + "</td>" + "<td><a class='btn btn-success' href=" + baseUrl + "/order/show/" + order.orderId + ">Update</a></td>" + "</tr>";
+          invoiceString += "<tr>" + "<td>" + order.articleName + "</td>" + "<td>" + order.invoiceId + "</td>" + "<td>" + order.orderId + "</td>" + "<td>" + order.firstName + "</td>" + "<td>" + order.lastName + "</td>" + "<td>" + order.street + order.hausNr + "</td>" + "<td>" + order.city + order.plz + "</td>" + "<td>" + order.orderDate + "</td>" + "<td><a class='btn btn-danger' href=" + baseUrl + "/order/show/" + order.orderId + ">Update</a></td>" + "</tr>";
         });
         invoiceString += "</tbody></table>";
         console.log(invoiceString);
@@ -20165,19 +20165,6 @@ $("#noAcceptCount,#demagedAcceptCount").change(function () {
       }
     });
   }
-});
-$("#cancelCount-unlock-btn").click(function () {
-  $.ajax({
-    type: "post",
-    url: baseUrl + "/order/unlock",
-    data: {
-      orderId: $(this).attr("orderId"),
-      selectId: "cancelCount-unlock"
-    },
-    success: function success() {
-      location.reload();
-    }
-  });
 });
 
 /***/ }),

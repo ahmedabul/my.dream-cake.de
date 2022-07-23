@@ -32,7 +32,7 @@ class Driver extends Authenticatable
      * The attributes that should be cast to native types.
      *
      * @var array
-     */
+     */ 
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
@@ -45,9 +45,9 @@ class Driver extends Authenticatable
     {
         return driverIndex();
     }
-    public static function deliver($invoiceId)
+    public static function deliver($orderId)
     {
-        return deliver($invoiceId);
+        return deliver($orderId);
     }
 }
 

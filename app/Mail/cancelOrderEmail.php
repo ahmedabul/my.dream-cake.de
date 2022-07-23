@@ -16,9 +16,9 @@ class cancelOrderEmail extends Mailable
      *
      * @return void
      */
-    public function __construct($order,$reasonCancel,$adminReaktion) 
+    public function __construct($order,$reasonCancel) 
     {
-        $this->order=$order; $this->reasonCancel=$reasonCancel; $this->adminReaktion=$adminReaktion;
+        $this->order=$order; $this->reasonCancel=$reasonCancel;
 
     }
 
@@ -29,6 +29,6 @@ class cancelOrderEmail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('mails.cancelOrderEmail',['order'=>$this->order, 'reasonCancel'=>$this->reasonCancel, 'adminReaktion'=>$this->adminReaktion]);
+        return $this->markdown('mails.cancelOrderEmail',['order'=>$this->order, 'reasonCancel'=>$this->reasonCancel]);
     }
 }

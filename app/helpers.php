@@ -61,7 +61,7 @@ if(!function_exists('storePhoto'))
     }
 }
 
-if(!function_exists('getCustomerInvoicess'))
+if(!function_exists('getCustomerInvoicess')) 
 {
     //Get all Invoices and Orders, they a Customer ordered yet.
     function getCustomerInvoicess($customerId)
@@ -73,7 +73,6 @@ if(!function_exists('getCustomerInvoicess'))
         ->join('articles','articles.id','=','orders.article_id')
         ->select('*','invoices.created_at as orderDate','invoices.id as invoiceId','delivery_addresses.lastName as daLastName','delivery_addresses.firstName as daFirstName','orders.id as orderId')
         ->where('customers.id','=',$customerId)
-        //->orderBy('orders.created_at','desc')
         ->get();
         $orders=[];
         $order=[];
@@ -148,24 +147,7 @@ if(!function_exists('ordersStruktur'))
         return $orders;
     }
 }
-//Get Count of Articles, which the Driver should deliver
-if(!function_exists('toDeliverCount'))
-{
-    function toDeliverCount($orderId)
-    {
-        $order=Order::getOrder($orderId);
-        //toDeliverCount 'how much should the Driver deliver'
-        $toDeliverCount=$order->demagedArticle+$order->demagedAcceptCount+$order->noAcceptCount;
-        if($toDeliverCount>0)
-        {
-            $toDeliverCount-=$order->cancelCount;
-        }
-        else{
-            $toDeliverCount=$order->articleCount-$order->cancelCount;
-        }
-        return $toDeliverCount;
-    }
-}
+
 /*registerController*/
 //Return all Values of Inputs in the Registerform
 if(!function_exists('getRegisterData'))
@@ -647,13 +629,13 @@ if(!function_exists('createOrder'))
         //Create the Orders
         foreach($articles as $indes => $article)
         {
-            Order::create([
-                'article_id'=>(int)$article['id'],
-                'invoice_id'=>$invoiceId,
-                'articleCount'=>(int)$article['articleCount'],
-                'toDileverCount'=>(int)$article['articleCount'],
-                'orderDelivered'=>'no'
-            ]);
+            for($i=0;$i<(int)$article['articleCount'];$i++)
+            {
+                Order::create([
+                    'article_id'=>(int)$article['id'],
+                    'invoice_id'=>$invoiceId,
+                ]);
+            }
         }
     }
 }
@@ -755,35 +737,13 @@ if(!function_exists('checkInvoice'))
       return  Order::where('invoice_id',$InviceId)->get();
     }
 }
-if(!function_exists('cancelOrder'))
-{
-    function cancelOrder($orderId, $reasonCancel, $adminReaktion ,$cancelCount)
-    {
-        $person=null;
-        if(Auth::guard('admin')->check())
-        {
-            $person='admin';
-        }else{
-            $person='driver';
-        }
-        Order::where('id',$orderId)
-        ->update([
-            'cancelDecision'=>$person,
-            'reasonCancel'=>$reasonCancel,
-            'adminReaktion'=>$adminReaktion,
-            'cancelCount'=>$cancelCount
-        ]);
-        $person=$orderId=$reasonCancel=$adminReaktion=null;
-    }
-}
 
 //Send to Customer an Email, that was canceld the Order
-if(!function_exists('cancelOrderEmail'))
+if(!function_exists('cancelOrderEmail')) 
 {
-    function cancelOrderEmail($email,$order,$reasionCancel,$adminReaktion)
+    function cancelOrderEmail($email,$order,$reasionCancel)
     {
-        Mail::to($email)->send(new cancelOrderEmail($order,$reasionCancel,$adminReaktion));
-        $email=$order=$reasionCancel=$adminReaktion=null;
+        Mail::to($email)->send(new cancelOrderEmail($order,$reasionCancel));
     }
 }
 //Send to Customer an Email, that was dilevered the Order
@@ -812,11 +772,11 @@ if(!function_exists('ordersToDrivers'))
         ->where('orders.orderDelivered','=','no')
         ->get();
          return ordersStruktur($orders);
-    }
+    } 
 }
-if(!function_exists('returnOrders'))
+if(!function_exists('allOrders'))
 {
-    function returnOrders()
+    function allOrders()
     {
         $orders=DB::table('customers')
         ->join('delivery_addresses','delivery_addresses.customer_id','=','customers.id')
@@ -825,13 +785,7 @@ if(!function_exists('returnOrders'))
         ->join('articles','articles.id','=','orders.article_id')
         ->leftJoin('drivers', 'invoices.driver_id', '=', 'drivers.id')
         ->select('*','invoices.id as invoiceId', 'orders.id as orderId', 'orders.created_at as orderDate','delivery_addresses.lastName as daLastName','delivery_addresses.firstName as daFirstName')
-        ->Where('demagedArticle','>',0)
-        ->orWhere('noAcceptCount','>',0)
-        ->orWhere('demagedAcceptCount','>',0)
-        ->orWhere('cancelCount','>',0)
-        ->where(function ($query) {
-            $query->where('orderDelivered','yes');
-        })
+        ->where('orders.delivered','0')
         ->get();
         return ordersStruktur($orders);
     }
@@ -910,7 +864,7 @@ if(!function_exists('driverIndex'))
         ->join('articles','articles.id','=','orders.article_id')
         ->select('*','invoices.id as invoiceId','orders.id as orderId')
         ->where('drivers.id', Auth::guard('driver')->user()->id)
-        ->where('orderDelivered','no')
+        ->where('orders.delivered','0')
         ->get();
         return ordersStruktur($orders);
     }
@@ -918,7 +872,7 @@ if(!function_exists('driverIndex'))
 //Get Orders, they the Driver will deliver now
 if(!function_exists('deliver'))
 {
-    function deliver($invoiceId)
+    function deliver($orderId)
     {
         return DB::table('customers')
         ->join('delivery_addresses','delivery_addresses.customer_id','=','customers.id')
@@ -926,10 +880,9 @@ if(!function_exists('deliver'))
         ->leftJoin('drivers','invoices.driver_id','=','drivers.id')
         ->join('orders','orders.invoice_id','=','invoices.id')
         ->join('articles','articles.id','=','orders.article_id')
-        ->select('*','invoices.id as invoiceId','customers.email as customerEmail','delivery_addresses.lastName as daLastName','delivery_addresses.firstName as daFirstName')
-        ->where('invoices.id',$invoiceId)
-        ->where('orders.orderDelivered','!=','yes')
-        ->get();
+        ->select('*','invoices.id as invoiceId','orders.id as orderId','customers.email as customerEmail','delivery_addresses.lastName as daLastName','delivery_addresses.firstName as daFirstName')
+        ->where('orders.id',$orderId)
+        ->get()->first();
     }
 }
 if(!function_exists('deliverConfirmValidation'))
@@ -958,19 +911,19 @@ if(!function_exists('deliverConfirmValidation'))
 }
 if(!function_exists('driverConfirmDeliver'))
 {
-    function driverConfirmDeliver($request)
+    function driverConfirmDeliver($nameOfNeighbor, $streetOfNeighbor, $hausNrOfNeighbor, $orderId, $articlePlace)
     {
-        if($request->articlePlace=="customer")
+        if($articlePlace=="customer")
         {
-            $Place='Persönlich wurde die Bestellung bei der Kunde zugestellt';
+            $Place='Die Sendung wurde an dem Kunde zugestellt';
         }
         else
         {
-            $Place='Bei dem Nachbar wurde die Bestellung zugestellt. Name:'.$request->nameOfNeighbor.' Straße:'.$request->streetOfNeighbor.' HausNr:'.$request->hausNrOfNeighbor;
+            $Place='Die Sendung wurde an Nachbarn zugestellt. Name:'.$nameOfNeighbor.' Straße:'.$streetOfNeighbor.' HausNr:'.$hausNrOfNeighbor;
         }
-        Order::where('invoice_id',$request->invoiceId)
+        Order::where('id',$orderId)
         ->update([
-        'orderDelivered'=>'yes',
+        'delivered'=>'1',
         'articlePlace'=>$Place
         ]);
     } 

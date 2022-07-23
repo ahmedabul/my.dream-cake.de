@@ -14,7 +14,7 @@ class orderController extends Controller
 { 
     public function __construct()
     {
-        $this->middleware('customer')->except(['checkLogin','index','cancel','deliver','cancelForm','ordersToDrivers','orderDriverSave','return','goToResearch','research','show','unlock']);
+        $this->middleware('customer')->except(['checkLogin','index','cancel','deliver','cancelForm','ordersToDrivers','orderDriverSave','allOrders','goToResearch','research','show','unlock','finish']);
     }
     public function checkLogin(Request $request) 
     {
@@ -46,7 +46,7 @@ class orderController extends Controller
     public function create($deliveryAddressId)
     {
         //Create Invoice 
-        Invoice::create([ 
+        Invoice::create([
             'delivery_address_id'=>$deliveryAddressId,
         ]);
         //Create Order
@@ -74,18 +74,27 @@ class orderController extends Controller
     public function cancel(Request $request)
     {
         //Validation
-        if(empty($request->reasonCancel) or empty($request->adminReaktion) or empty($request->cancelCount))
+        if(empty($request->reasonCancel))
         {
-            return redirect()->back()->with(['reasonCancel'=>$request->reasonCancel, 'adminReaktion'=>$request->adminReaktion, 'sts'=>'Füllen Sie bitte alle Felder aus']);
+            return redirect()->back()->with(['reasonCancel'=>$request->reasonCancel, 'sts'=>'Bitte füllen Sie das Feld aus.']);
         }
         //Get the canceled Order
         $order=Order::getOrder($request->orderId);
-        //cancel the Order
-        cancelOrder($request->orderId, $request->reasonCancel, $request->adminReaktion, $request->cancelCount);
-        //Send Email 'cancelsOrder' to Customer
-        cancelOrderEmail($request->email,$order, $request->reasonCancel, $request->adminReaktion);
+        $invoiceId=$order->invoiceId;
+         //Send Email 'cancelsOrder' to Customer
+        cancelOrderEmail($request->email,$order, $request->reasonCancel);
+         //delete the Order
+         Order::where('id',$order->orderId)
+         ->delete();
+         //Delete the Invoice, if it is empty
+         $orders=Order::where('invoice_id',$invoiceId)->get();
+         if(count($orders)==0)
+         {
+            Invoice::where('id',$invoiceId)
+            ->delete();
+         }
         //return to Index Admin
-        return redirect()->back()->with(['sts'=>'Ein E-Mail wurde erfolgreich gesendet']);
+        return redirect()->route('order.goToResearch')->with(['emailSent'=>'E-Mail wurde erfolgreich versendet']);
     }
     public function cancelForm($orderId,$email)
     {
@@ -137,38 +146,29 @@ class orderController extends Controller
         {
             return redirect()->back()->with(['invoiceId'=>$request->invoiceId,'stsError'=>'Wählen Sie einen Fahrer aus']);
         }
+        //
+        foreach($request->orderIds as $index=> $orderId) 
+        {
+            $order=Order::find($orderId);
+            if($order->ready=='0')
+            {
+                return redirect()->back()->with(['invoiceId'=>$request->invoiceId,'stsError'=>'Nicht alle Bestellungen sind abgeschlissen']);
+            }
+        }
         //set the DriverId
         Invoice::where('id',$request->invoiceId)
         ->update([
             'driver_id'=>$request->driverId, 
         ]);
-        if(!empty($request->orderIds))
-        {  
-            foreach($request->orderIds as $orderids =>$orderId)
-            {
-                $toDeliverCount=toDeliverCount($orderId);
-                $order=Order::getOrder($orderId);
-                $yesAcceptCount=($order->articleCount-$toDeliverCount);
-                Order::where('id',$orderId)
-                ->update([
-                    'toDeliverCount'=>$toDeliverCount,
-                    'orderDelivered'=>'no',
-                    'demagedArticle'=>null,
-                    'demagedAcceptCount'=>null,
-                    'noAcceptCount'=>null, 
-                    'yesAcceptCount'=>$yesAcceptCount,
-                    'reasonCancel'=>null,
-                ]);
-            }
-        }
+   
         return redirect()->back();
     
     }
-    public function return()
+    public function allOrders()
     {
-        $invoices=Order::returnOrders();
+        $invoices=Order::allOrders();
         $drivers=Driver::all();
-        return view('order.return',compact(['invoices','drivers']));
+        return view('order.allOrders',compact(['invoices','drivers']));
     }
     public function goToResearch()
     {
@@ -177,48 +177,38 @@ class orderController extends Controller
     }
     public function research(Request $request)
     {
+      
         //Get Results 'Invoices' of Research 
         return Order::research($request->research);
     }
-    public function show($orderId) 
+    public function show($orderId)  
     {
+        $order=Order::getOrder($orderId);
+        $customerAddres=Delivery_address::where('customer_id',$order->customer_id)->get()->first();
         //Show Order, which would you like to update
-        return view('order.show',['order'=>Order::getOrder($orderId)]);
+        return view('order.show',['order'=>$order,'customerAddres'=>$customerAddres]);
     }
-    public function unlock(Request $request)
+   
+    public function finish($orderId,$key)
     {
-        if($request->action=='unlock')
-        Order::where('id',$request->orderId)
-        ->update([
-            'demagedAcceptCount'=>0,
-            'noAcceptCount'=>0
-        ]);
-        elseif($request->selectId=='noAcceptCount')
+        if($key=='yes')
         {
-            $noAcceptCount=Order::find($request->orderId)->noAcceptCount;
-            Order::where('id',$request->orderId)
+            Order::where('id',$orderId)
             ->update([
-                'noAcceptCount'=>$request->action+$noAcceptCount
+                'ready'=>'1'
             ]);
         }
-        elseif($request->selectId=='demagedAcceptCount')
-        {
-            $demagedAcceptCount=Order::find($request->orderId)->demagedAcceptCount;
-            Order::where('id',$request->orderId)
+        else{
+            Order::where('id',$orderId)
             ->update([
-                'demagedAcceptCount'=>$request->action+$demagedAcceptCount
+                'ready'=>'0'
+            ]);
+            $invoiceId=Order::where('id',$orderId)->get()->first()->invoice_id;
+            Invoice::where('id',$invoiceId)
+            ->update([
+                'driver_id'=>Null
             ]);
         }
-        elseif($request->selectId=="cancelCount-unlock")
-        {
-            Order::where('id',$request->orderId)
-            ->update([
-                'cancelCount'=>null,
-                'cancelDecision'=>null,
-                'adminReaktion'=>null,
-                'reasonCancel'=>null
-            ]);
-        }
-       
+        return redirect()->back();
     }
 }

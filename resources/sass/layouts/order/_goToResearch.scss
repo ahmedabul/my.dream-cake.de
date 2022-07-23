@@ -1,34 +1,26 @@
 .order-goToResearch {
-    margin-top: 70px;
-    .header {
-        background-color: black;
-        width: 100%;
-        padding: 50px;
-        h2 {
-            color: $mainColor;
-            border-bottom: 5px solid $mainColor;
-            width: 90%;
+    .card {
+        margin: auto;
+        margin-top: 100px;
+        .card-body {
+            .card-title {
+                border-bottom: 3px solid gray;
+            }
+            .card-subtitle {
+                margin-top: 10px;
+            }
+            .blockquote-footer {
+                margin-top: 20px;
+            }
+            input {
+                border: none;
+                border-bottom: 1px solid gray;
+            }
         }
-        label {
-            color: wheat
-        }
-        input {
-            border: none;
-            background: none;
-            outline: none;
-            border-bottom: 1px solid $mainColor;
-            background-color: black;
-            color: wheat;
-            font-size: 18px;
-            margin-bottom: 10px;
-            width: 90%;
-            margin-left: 5px;
-            -webkit-appearance: none;
-        }
-        .btn {
-            width: 90%;
-            margin-left: 5px;
-        }
+    }
+    .line {
+        margin-top: 50px;
+        border-bottom: 1px solid $mainColor;
     }
     .body {
         margin-top: 10px;

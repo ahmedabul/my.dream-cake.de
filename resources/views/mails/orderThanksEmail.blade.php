@@ -2,10 +2,10 @@
 <h2 style="text-align: center">SaraJolie </h2>
 Danke für Ihre Bestellung
 @component('mail::table')
-| Artikel                 | Menge             | Prris             |
-|:-----------------------: |:------------------|:------------------:|
+| Artikel                 |  Prris             |
+|:-----------------------: |:------------------:|
 @foreach($orders as $order)
-|{{$order->articleName}}   | {{$order->articleCount}} | {{$order->price}}€ |
+|{{$order->articleName}}   | {{$order->price}}€ |
 @endforeach
 @endcomponent
 <h3>Rechnung-Nr:{{$order->invoiceId}}</h3>

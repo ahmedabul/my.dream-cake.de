@@ -18,16 +18,3 @@ $("#noAcceptCount,#demagedAcceptCount").change(function() {
         });
     }
 });
-$("#cancelCount-unlock-btn").click(function() {
-    $.ajax({
-        type: "post",
-        url: baseUrl + "/order/unlock",
-        data: {
-            orderId: $(this).attr("orderId"),
-            selectId: "cancelCount-unlock"
-        },
-        success: function() {
-            location.reload();
-        }
-    });
-});
