@@ -20,7 +20,7 @@ class paypalController extends Controller
         $this->gateway->setTestMode(true);
     }
     public function index(Request $request)
-    {/*
+    {
         $articles=articlesImCart();
         $mount=0;
         foreach($articles as $article => $articleData)
@@ -45,7 +45,6 @@ class paypalController extends Controller
         } catch (\Throwable $e) {
            print $e->getMessage();
      
-        }*/
-        return redirect()->route('order.create',['deliveryAddressId'=>$request->deliveryAddressId]);
+        }
     }
 }

@@ -18,7 +18,6 @@ class homeController extends Controller
             'email'=>'sarahjolie@hotmail.com',
             'password'=>Hash::make(12345678)
         ]);*/
-
         //Get all Articles from Category 'Kinder'
         $childrenArticles=Category::getArticles('Kinder');
         //Get just last 3 Articles from Category 'Kinder'
